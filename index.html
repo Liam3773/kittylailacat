@@ -1320,11 +1320,23 @@
     }
 
     function toggleOnlineStatus() {
-      if (!currentUser) return;
-      appData.site.isOnline = !appData.site.isOnline;
-      appData.site.statusText = appData.site.isOnline ? "currently online" : "currently offline";
-      saveAllInlineEditsToCloud();
-    }
+  if (!currentUser) return;
+  appData.site.isOnline = !appData.site.isOnline;
+  const newStatus = appData.site.isOnline ? "currently online" : "currently offline";
+  appData.site.statusText = newStatus;
+  
+  // Update screen elements immediately before saving
+  const textEl = document.getElementById('el-status-text');
+  if (textEl) textEl.innerText = newStatus;
+  
+  const dotEl = document.getElementById('el-status-dot');
+  if (dotEl) {
+    if (appData.site.isOnline) dotEl.classList.add('online');
+    else dotEl.classList.remove('online');
+  }
+
+  saveAllInlineEditsToCloud();
+}
 
     function saveAllInlineEditsToCloud() {
       if (!currentUser) return;
