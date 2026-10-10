@@ -43,7 +43,7 @@
       font-size: 14px;
       line-height: 1.6;
       min-height: 100vh;
-      padding: 24px 12px 60px;
+      padding: 16px 10px 80px;
     }
 
     a { color: var(--accent-pink); text-decoration: none; cursor: pointer; }
@@ -55,11 +55,11 @@
       background: var(--bg-dark);
       border: 3px solid var(--border-purple);
       box-shadow: 0 0 0 2px #0f0b13, 8px 10px 0 rgba(20, 10, 30, 0.6);
-      padding: 16px;
+      padding: 14px;
       position: relative;
     }
 
-    /* Admin Toolbar */
+    /* Fixed Admin Toolbar */
     #admin-bar {
       display: none;
       background: #2a0b1d;
@@ -73,24 +73,27 @@
       font-family: 'Silkscreen', monospace;
       font-size: 11px;
       color: var(--pale-lavender);
-      box-shadow: 0 0 12px rgba(255, 114, 189, 0.4);
+      box-shadow: 0 0 14px rgba(255, 114, 189, 0.4);
     }
     #admin-bar.active { display: flex; }
 
-    /* Visual Indicator for Editable Text When in Admin Mode */
+    /* Editable On-Page Highlights */
     body.is-admin [contenteditable="true"] {
-      outline: 1px dashed var(--accent-pink);
-      outline-offset: 2px;
-      background: rgba(255, 114, 189, 0.08);
+      outline: 1px dashed var(--accent-pink) !important;
+      outline-offset: 3px;
+      background: rgba(255, 114, 189, 0.08) !important;
       cursor: text;
     }
     body.is-admin [contenteditable="true"]:focus {
-      outline: 2px solid var(--accent-pink);
-      background: rgba(255, 114, 189, 0.15);
+      outline: 2px solid var(--accent-pink) !important;
+      background: rgba(255, 114, 189, 0.18) !important;
     }
+
+    /* Tap-to-Swap Image Indicators */
     body.is-admin .admin-swappable-img {
       cursor: pointer;
       position: relative;
+      transition: filter 0.15s, box-shadow 0.15s;
     }
     body.is-admin .admin-swappable-img:hover {
       filter: brightness(1.15) contrast(1.1);
@@ -101,11 +104,13 @@
     .top-banner {
       background: var(--panel-dark);
       border: 2px solid var(--border-purple);
-      padding: 14px 20px;
+      padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .banner-title-group h1 {
@@ -133,7 +138,9 @@
       font-family: 'VT323', monospace;
       font-size: 16px;
       color: var(--text-muted);
+      cursor: default;
     }
+    body.is-admin .status-badge { cursor: pointer; }
     .status-dot {
       width: 10px;
       height: 10px;
@@ -161,7 +168,7 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       list-style: none;
       flex-wrap: wrap;
     }
@@ -222,10 +229,11 @@
       font-family: 'Silkscreen', monospace;
       font-size: 12px;
       color: var(--pale-lavender);
+      gap: 8px;
     }
     .retro-box-body { padding: 14px; }
 
-    /* Polaroid Styles */
+    /* Polaroids */
     .polaroid-frame {
       background: #fbf7ee;
       padding: 8px 8px 18px 8px;
@@ -235,6 +243,7 @@
       display: inline-block;
       transform: rotate(-1.5deg);
       transition: transform 0.2s ease;
+      vertical-align: top;
     }
     .polaroid-frame:hover { transform: rotate(0deg) scale(1.02); }
     .polaroid-frame img {
@@ -273,9 +282,9 @@
       background: #ff4757;
       color: white;
       border: 1px solid #000;
-      width: 20px;
-      height: 20px;
-      font-size: 11px;
+      width: 22px;
+      height: 22px;
+      font-size: 12px;
       font-family: sans-serif;
       cursor: pointer;
       display: none;
@@ -299,7 +308,7 @@
       filter: drop-shadow(0 0 6px rgba(255, 114, 189, 0.4));
     }
 
-    /* Currently list */
+    /* Lists & Tables */
     .currently-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
     .currently-list li {
       font-size: 13px;
@@ -310,7 +319,6 @@
     .currently-list li strong { color: var(--pale-lavender); display: inline-block; min-width: 110px; }
     .currently-list li span { color: var(--accent-pink); }
 
-    /* Post view */
     .post-card {
       background: #1c1523;
       border: 1px solid var(--border-purple);
@@ -319,10 +327,9 @@
     }
     .post-header { border-bottom: 1px dotted var(--border-purple); padding-bottom: 8px; margin-bottom: 12px; }
     .post-title { font-family: 'Silkscreen', monospace; font-size: 18px; color: var(--accent-pink); }
-    .post-meta-row { display: flex; gap: 14px; font-family: 'VT323', monospace; font-size: 16px; color: var(--text-muted); }
+    .post-meta-row { display: flex; gap: 14px; font-family: 'VT323', monospace; font-size: 16px; color: var(--text-muted); flex-wrap: wrap; }
     .post-body { font-size: 14px; color: var(--text-main); margin: 12px 0; white-space: pre-wrap; }
 
-    /* Stamps & Blinkies */
     .stamps-grid { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
     .retro-badge {
       font-family: 'VT323', monospace;
@@ -344,7 +351,6 @@
       margin-top: 8px;
     }
 
-    /* Views */
     .view-panel { display: none; }
     .view-panel.active { display: block; }
 
@@ -353,7 +359,6 @@
     .survey-table td.label-col { width: 35%; background: #2b1f35; color: var(--pale-lavender); font-weight: bold; }
     .survey-table td.val-col { background: #1c1524; color: var(--text-muted); }
 
-    /* Scrapbook Add Card */
     .add-polaroid-card {
       border: 2px dashed var(--accent-pink);
       background: rgba(255, 114, 189, 0.05);
@@ -372,7 +377,7 @@
     body.is-admin .add-polaroid-card { display: flex; }
     .add-polaroid-card:hover { background: rgba(255, 114, 189, 0.15); }
 
-    /* Modals */
+    /* Clean In-Page Retro Modals */
     .modal-backdrop {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -391,7 +396,7 @@
       border: 3px solid var(--accent-pink);
       box-shadow: 0 0 25px rgba(255, 114, 189, 0.4);
       width: 100%;
-      max-width: 520px;
+      max-width: 540px;
       max-height: 90vh;
       overflow-y: auto;
       padding: 16px;
@@ -426,6 +431,25 @@
     }
     .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--accent-pink); }
 
+    /* Custom Retro Toast Notification */
+    #retro-toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #2a0b1d;
+      border: 2px solid var(--accent-pink);
+      color: var(--pale-lavender);
+      padding: 12px 18px;
+      font-family: 'Silkscreen', monospace;
+      font-size: 12px;
+      box-shadow: 0 0 16px rgba(255, 114, 189, 0.6);
+      z-index: 10000;
+      transform: translateY(150px);
+      transition: transform 0.3s ease;
+      pointer-events: none;
+    }
+    #retro-toast.show { transform: translateY(0); }
+
     .site-footer {
       margin-top: 24px;
       text-align: center;
@@ -438,14 +462,17 @@
 </head>
 <body>
 
+  <!-- Floating Toast Notification (Replaces ugly alert dialogs) -->
+  <div id="retro-toast">Notification Message</div>
+
   <div class="site-wrapper">
 
     <!-- FLOATING ADMIN ACTION BAR -->
     <div id="admin-bar">
-      <div>✦ ADMIN MODE ACTIVE &bull; Click any text/photo to edit directly!</div>
-      <div style="display: flex; gap: 8px;">
+      <div>✦ ADMIN MODE &bull; Click ANY text to edit &bull; Tap photos to swap from Camera Roll!</div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
         <button class="retro-btn pink" onclick="saveAllInlineEditsToCloud()">[ 💾 SAVE EDITS TO CLOUD ]</button>
-        <button class="retro-btn" onclick="openNewPostModal()">[ + NEW POST ]</button>
+        <button class="retro-btn" onclick="openPostModal()">[ + WRITE ENTRY ]</button>
         <button class="retro-btn" onclick="logoutFirebase()">[ LOGOUT ]</button>
       </div>
     </div>
@@ -453,16 +480,16 @@
     <!-- 1. Top Decorative Banner -->
     <header class="top-banner">
       <div class="banner-title-group">
-        <h1 id="el-site-title">kittylailacat</h1>
-        <div class="banner-subtitle" id="el-site-sub">welcome to lailaland ~ mrow</div>
+        <h1 id="el-site-title" class="editable-any">kittylailacat</h1>
+        <div class="banner-subtitle" id="el-site-sub" class="editable-any">welcome to lailaland ~ mrow</div>
       </div>
       <div class="status-badge" onclick="toggleOnlineStatus()">
         <span class="status-dot" id="el-status-dot"></span>
-        <span id="el-status-text">currently offline</span>
+        <span id="el-status-text" class="editable-any">currently offline</span>
       </div>
     </header>
 
-    <!-- 2. Retro Navigation Bar (GUESTBOOK REMOVED) -->
+    <!-- 2. Retro Navigation Bar -->
     <nav class="nav-bar">
       <ul class="nav-links">
         <span style="color: var(--dusty-pink);">✦</span>
@@ -482,25 +509,25 @@
       <!-- LEFT COLUMN -->
       <main class="left-col">
 
-        <!-- ================= HOME ================= -->
+        <!-- ================= HOME TAB ================= -->
         <section id="view-home" class="view-panel active">
           
           <!-- Greeting Box -->
           <div class="retro-box">
             <div class="retro-box-header">
-              <span>greeting:</span>
+              <span id="el-greeting-header" class="editable-any">greeting:</span>
               <span>&hearts;</span>
             </div>
             <div class="retro-box-body">
-              <div style="display: flex; gap: 16px; align-items: center; background: #1c1524; border: 1px dashed var(--border-purple); padding: 12px;">
-                <div style="flex: 1;" id="el-greeting-text">
+              <div style="display: flex; gap: 16px; align-items: center; background: #1c1524; border: 1px dashed var(--border-purple); padding: 12px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 220px;" id="el-greeting-text" class="editable-any">
                   <strong style="color: var(--accent-pink);">hello visitor &lt;3</strong><br>
                   welcome to my little private corner of cyberspace. this is my personal sanctuary for late night thoughts, photos, and dreams.
                 </div>
                 <div class="polaroid-frame">
                   <div class="washi-tape-top"></div>
-                  <img id="el-greeting-img" class="admin-swappable-img" src="images/photo2.jpg" alt="photo" onerror="this.src='https://picsum.photos/seed/laila2/300/300'" onclick="swapImageDirectly('el-greeting-img')">
-                  <div class="polaroid-caption" id="el-greeting-caption">10/10/26 laila &lt;3</div>
+                  <img id="el-greeting-img" class="admin-swappable-img" src="images/photo2.jpg" alt="photo" onerror="this.src='https://picsum.photos/seed/laila2/300/300'" onclick="triggerPhotoSwap('site_greeting')">
+                  <div class="polaroid-caption editable-any" id="el-greeting-caption">10/10/26 laila &lt;3</div>
                 </div>
               </div>
             </div>
@@ -509,27 +536,31 @@
           <!-- Dear Internet Box -->
           <div class="retro-box">
             <div class="retro-box-header">
-              <span>dear internet...</span>
+              <span id="el-dear-internet-header" class="editable-any">dear internet...</span>
               <span>(=^･ω･^=)</span>
             </div>
             <div class="retro-box-body">
-              <p style="color: var(--pale-lavender); font-size: 13px;" id="el-dear-internet-text">
+              <p style="color: var(--pale-lavender); font-size: 13px;" id="el-dear-internet-text" class="editable-any">
                 this website is written by me, for me. a place preserved from the noise of modern algorithms. don't take anything here too seriously. ~
               </p>
             </div>
           </div>
 
-          <!-- Diary Posts -->
+          <!-- Diary Posts Stream -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="font-family: 'Silkscreen', monospace; font-size: 13px; color: var(--pale-lavender);">latest entries:</div>
+            <button class="retro-btn pink" onclick="openPostModal()">[ + write new entry ]</button>
+          </div>
           <div id="posts-container"></div>
 
         </section>
 
-        <!-- ================= DIARY ARCHIVE ================= -->
+        <!-- ================= DIARY ARCHIVE TAB ================= -->
         <section id="view-diary" class="view-panel">
           <div class="retro-box">
             <div class="retro-box-header">
               <span>diary archive // all entries</span>
-              <span id="archive-count">1 entry</span>
+              <button class="retro-btn pink" style="padding: 2px 8px;" onclick="openPostModal()">+ new entry</button>
             </div>
             <div class="retro-box-body">
               <div id="archive-posts-list"></div>
@@ -537,30 +568,30 @@
           </div>
         </section>
 
-        <!-- ================= MEMORIES (POLAROID SCRAPBOOK) ================= -->
+        <!-- ================= MEMORIES TAB ================= -->
         <section id="view-memories" class="view-panel">
           <div class="retro-box">
             <div class="retro-box-header">
-              <span>memories // digital scrapbook</span>
+              <span id="el-memories-header" class="editable-any">memories // digital scrapbook</span>
               <span>camera</span>
             </div>
             <div class="retro-box-body">
-              <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
+              <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;" id="el-memories-desc" class="editable-any">
                 polaroids, low-res flash photos, and moments saved in time.
               </p>
               
-              <div class="memories-grid" id="memories-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px;">
-                <!-- Generated Polaroids + Add Button -->
+              <div class="memories-grid" id="memories-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px;">
+                <!-- Polaroids & Add Button injected here -->
               </div>
             </div>
           </div>
         </section>
 
-        <!-- ================= ABOUT ================= -->
+        <!-- ================= ABOUT TAB ================= -->
         <section id="view-about" class="view-panel">
           <div class="retro-box">
             <div class="retro-box-header">
-              <span>about me // survey</span>
+              <span id="el-about-header" class="editable-any">about me // survey</span>
               <span>☆.。.:*・</span>
             </div>
             <div class="retro-box-body">
@@ -577,7 +608,7 @@
         <!-- Profile Widget -->
         <div class="retro-box">
           <div class="retro-box-header">
-            <span>About Me</span>
+            <span id="el-about-me-title" class="editable-any">About Me</span>
             <span>&hearts;</span>
           </div>
           <div class="retro-box-body" style="text-align: center;">
@@ -588,29 +619,29 @@
                     <path d="M 80,140 C 80,140 10,92 10,48 C 10,22 32,8 56,8 C 69,8 76,16 80,22 C 84,16 91,8 104,8 C 128,8 150,22 150,48 C 150,92 80,140 80,140 Z"/>
                   </clipPath>
                 </defs>
-                <image id="el-profile-img" class="admin-swappable-img" href="images/avatar.jpg" width="160" height="150" preserveAspectRatio="xMidYMid slice" clip-path="url(#heartClip)" onerror="this.setAttribute('href','https://picsum.photos/seed/laila4/300/300')" onclick="swapAvatarImage()"/>
+                <image id="el-profile-img" class="admin-swappable-img" href="images/avatar.jpg" width="160" height="150" preserveAspectRatio="xMidYMid slice" clip-path="url(#heartClip)" onerror="this.setAttribute('href','https://picsum.photos/seed/laila4/300/300')" onclick="triggerPhotoSwap('profile_avatar')"/>
                 <path d="M 80,140 C 80,140 10,92 10,48 C 10,22 32,8 56,8 C 69,8 76,16 80,22 C 84,16 91,8 104,8 C 128,8 150,22 150,48 C 150,92 80,140 80,140 Z" fill="none" stroke="#ff72bd" stroke-width="3" stroke-dasharray="6,4"/>
               </svg>
             </div>
-            <div style="font-family: 'Silkscreen', monospace; font-size: 16px; color: var(--accent-pink);" id="el-profile-name">laila</div>
-            <div style="font-size: 11px; color: var(--text-muted); font-family: 'Silkscreen', monospace;">Display name: <span id="el-display-name">laila</span></div>
-            <div style="color: var(--pale-lavender); font-size: 12px; margin: 8px 0; font-style: italic; word-break: break-all;" id="el-bio">"mrowwwwwwwwwwwwwwwwwwwwww"</div>
+            <div style="font-family: 'Silkscreen', monospace; font-size: 16px; color: var(--accent-pink);" id="el-profile-name" class="editable-any">laila</div>
+            <div style="font-size: 11px; color: var(--text-muted); font-family: 'Silkscreen', monospace;">Display name: <span id="el-display-name" class="editable-any">laila</span></div>
+            <div style="color: var(--pale-lavender); font-size: 12px; margin: 8px 0; font-style: italic; word-break: break-all;" id="el-bio" class="editable-any">"mrowwwwwwwwwwwwwwwwwwwwww"</div>
           </div>
         </div>
 
         <!-- Currently Widget -->
         <div class="retro-box">
           <div class="retro-box-header">
-            <span>Currently</span>
+            <span id="el-currently-title" class="editable-any">Currently</span>
             <span>♪</span>
           </div>
           <div class="retro-box-body">
             <ul class="currently-list">
-              <li><strong>Listening to:</strong> <span id="el-curr-listening">nettspend</span></li>
-              <li><strong>Watching:</strong> <span id="el-curr-watching">da bois</span></li>
-              <li><strong>Reading:</strong> <span id="el-curr-reading">yaoi</span></li>
-              <li><strong>Feeling:</strong> <span id="el-curr-feeling">Tired.</span></li>
-              <li><strong>Thinking about:</strong> <span id="el-curr-thinking">my boyfriend liam</span></li>
+              <li><strong class="editable-any" id="lbl-curr-1">Listening to:</strong> <span id="el-curr-listening" class="editable-any">nettspend</span></li>
+              <li><strong class="editable-any" id="lbl-curr-2">Watching:</strong> <span id="el-curr-watching" class="editable-any">da bois</span></li>
+              <li><strong class="editable-any" id="lbl-curr-3">Reading:</strong> <span id="el-curr-reading" class="editable-any">yaoi</span></li>
+              <li><strong class="editable-any" id="lbl-curr-4">Feeling:</strong> <span id="el-curr-feeling" class="editable-any">Tired.</span></li>
+              <li><strong class="editable-any" id="lbl-curr-5">Thinking about:</strong> <span id="el-curr-thinking" class="editable-any">my boyfriend liam</span></li>
             </ul>
           </div>
         </div>
@@ -618,11 +649,11 @@
         <!-- Favorite Things -->
         <div class="retro-box">
           <div class="retro-box-header">
-            <span>Favorite Things</span>
+            <span id="el-fav-title" class="editable-any">Favorite Things</span>
             <span>★</span>
           </div>
           <div class="retro-box-body">
-            <div style="font-size: 13px; color: var(--accent-pink); font-family: 'Silkscreen', monospace;" id="el-favorite-things">
+            <div style="font-size: 13px; color: var(--accent-pink); font-family: 'Silkscreen', monospace;" id="el-favorite-things" class="editable-any">
               &hearts; my boyfriend
             </div>
           </div>
@@ -631,11 +662,11 @@
         <!-- Updates Widget -->
         <div class="retro-box">
           <div class="retro-box-header">
-            <span>Updates</span>
+            <span id="el-updates-title" class="editable-any">Updates</span>
             <span>[!]</span>
           </div>
           <div class="retro-box-body">
-            <div style="font-size: 13px; color: var(--text-muted);" id="el-updates">
+            <div style="font-size: 13px; color: var(--text-muted);" id="el-updates" class="editable-any">
               no
             </div>
           </div>
@@ -644,17 +675,17 @@
         <!-- Stamps & Blinkies -->
         <div class="retro-box">
           <div class="retro-box-header">
-            <span>Stamps & Blinkies</span>
+            <span id="el-stamps-title" class="editable-any">Stamps & Blinkies</span>
             <span>✧</span>
           </div>
           <div class="retro-box-body">
-            <div class="stamps-grid">
-              <div class="retro-badge pink">&hearts; LIAM &hearts;</div>
-              <div class="retro-badge">ᓚᘏᗢ NETTSPEND</div>
-              <div class="retro-badge pink">BEST VIEWED 1024x768</div>
-              <div class="retro-badge">TIRED 24/7</div>
+            <div class="stamps-grid" id="stamps-container">
+              <div class="retro-badge pink editable-any" id="badge-1">&hearts; LIAM &hearts;</div>
+              <div class="retro-badge editable-any" id="badge-2">ᓚᘏᗢ NETTSPEND</div>
+              <div class="retro-badge pink editable-any" id="badge-3">BEST VIEWED 1024x768</div>
+              <div class="retro-badge editable-any" id="badge-4">TIRED 24/7</div>
             </div>
-            <div class="pixel-cat-art">
+            <div class="pixel-cat-art editable-any" id="el-cat-art">
   /\_/\  
  ( o.o ) 
   > ^ <  mrow!
@@ -668,7 +699,7 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-      <div>kittylailacat &copy; 2006-2026 &bull; made with love, boredom and too much internet</div>
+      <div id="el-footer-1" class="editable-any">kittylailacat &copy; 2006-2026 &bull; made with love, boredom and too much internet</div>
       <div style="font-size: 11px; margin-top: 4px; color: #7f6a8e;">
         [ <a onclick="window.scrollTo({top: 0, behavior: 'smooth'})">back to top</a> ] &bull; 
         <span id="footer-auth-link">[ <a onclick="handleAuthClick()">admin login</a> ]</span>
@@ -677,15 +708,17 @@
 
   </div>
 
-  <!-- LOGIN MODAL -->
+  <!-- ==========================================================
+       MODAL 1: CLEAN ADMIN LOGIN MODAL
+       ========================================================== -->
   <div class="modal-backdrop" id="loginModal">
     <div class="modal-window">
       <div class="modal-title">
         <span>✎ ADMIN LOGIN</span>
-        <button style="background:none; border:none; color:var(--accent-pink); font-size:18px; cursor:pointer;" onclick="closeLoginModal()">&times;</button>
+        <button style="background:none; border:none; color:var(--accent-pink); font-size:18px; cursor:pointer;" onclick="closeModal('loginModal')">&times;</button>
       </div>
       <div class="form-group">
-        <label>Admin Email:</label>
+        <label>Email:</label>
         <input type="email" id="login-email" class="form-input" placeholder="laila@example.com">
       </div>
       <div class="form-group">
@@ -693,23 +726,29 @@
         <input type="password" id="login-pass" class="form-input" placeholder="••••••••">
       </div>
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
-        <button class="retro-btn" onclick="closeLoginModal()">[ CANCEL ]</button>
+        <button class="retro-btn" onclick="closeModal('loginModal')">[ CANCEL ]</button>
         <button class="retro-btn pink" onclick="submitFirebaseLogin()">[ SIGN IN ]</button>
       </div>
     </div>
   </div>
 
-  <!-- NEW POST MODAL -->
+  <!-- ==========================================================
+       MODAL 2: WRITE / EDIT DIARY POST
+       ========================================================== -->
   <div class="modal-backdrop" id="postModal">
     <div class="modal-window">
       <div class="modal-title">
-        <span>✎ WRITE NEW DIARY ENTRY</span>
-        <button style="background: none; border: none; color: var(--accent-pink); font-size: 18px; cursor: pointer;" onclick="closePostModal()">&times;</button>
+        <span id="post-modal-heading">✎ WRITE DIARY ENTRY</span>
+        <button style="background: none; border: none; color: var(--accent-pink); font-size: 18px; cursor: pointer;" onclick="closeModal('postModal')">&times;</button>
       </div>
+
+      <input type="hidden" id="editing-post-id" value="">
+
       <div class="form-group">
         <label>Title:</label>
         <input type="text" id="post-title-input" class="form-input" placeholder="entry title...">
       </div>
+
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
         <div class="form-group">
           <label>Date:</label>
@@ -720,76 +759,156 @@
           <input type="text" id="post-mood-input" class="form-input" placeholder="e.g. birthday sex">
         </div>
       </div>
+
+      <!-- Native iPhone / File Picker Upload -->
       <div class="form-group">
-        <label>Photo URL / File (Optional):</label>
-        <input type="text" id="post-img-input" class="form-input" placeholder="images/photo1.jpg">
+        <label>Upload Photo (From Camera Roll / Computer):</label>
+        <input type="file" id="post-file-input" class="form-input" accept="image/*" style="padding: 4px;" onchange="handleImageFileSelect(event, 'post-img-preview', 'post-img-base64')">
+        <input type="hidden" id="post-img-base64">
+        
+        <div id="post-img-preview-box" style="margin-top: 8px; text-align: center; display: none;">
+          <img id="post-img-preview" src="" style="max-height: 140px; border: 1px solid var(--accent-pink);">
+          <div style="font-size: 10px; color: var(--dusty-pink); cursor: pointer;" onclick="clearPostPreview()">[ remove photo ]</div>
+        </div>
       </div>
+
       <div class="form-group">
-        <label>Diary Body Text:</label>
+        <label>Body Text:</label>
         <textarea id="post-body-input" class="form-textarea" style="min-height: 120px;" placeholder="dear diary..."></textarea>
       </div>
+
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
-        <button class="retro-btn" onclick="closePostModal()">[ cancel ]</button>
-        <button class="retro-btn pink" onclick="publishNewPost()">[ publish to cloud ]</button>
+        <button class="retro-btn" onclick="closeModal('postModal')">[ cancel ]</button>
+        <button class="retro-btn pink" onclick="savePostToCloud()">[ publish to cloud ]</button>
       </div>
     </div>
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
+  <!-- ==========================================================
+       MODAL 3: POLAROID ADD / SWAP MODAL
+       ========================================================== -->
+  <div class="modal-backdrop" id="polaroidModal">
+    <div class="modal-window">
+      <div class="modal-title">
+        <span id="pol-modal-heading">✦ PIN NEW POLAROID</span>
+        <button style="background: none; border: none; color: var(--accent-pink); font-size: 18px; cursor: pointer;" onclick="closeModal('polaroidModal')">&times;</button>
+      </div>
+
+      <input type="hidden" id="polaroid-target-type" value="">
+      <input type="hidden" id="polaroid-target-idx" value="">
+
+      <div class="form-group">
+        <label>Upload From Camera Roll / Files:</label>
+        <input type="file" id="polaroid-file-input" class="form-input" accept="image/*" style="padding: 4px;" onchange="handleImageFileSelect(event, 'pol-img-preview', 'pol-img-base64')">
+        <input type="hidden" id="pol-img-base64">
+        
+        <div id="pol-img-preview-box" style="margin-top: 8px; text-align: center; display: none;">
+          <img id="pol-img-preview" src="" style="max-height: 140px; border: 1px solid var(--accent-pink);">
+        </div>
+      </div>
+
+      <div class="form-group" id="pol-caption-group">
+        <label>Date & Caption:</label>
+        <input type="text" id="pol-caption-input" class="form-input" placeholder="10/10/26 • late night">
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
+        <button class="retro-btn" onclick="closeModal('polaroidModal')">[ cancel ]</button>
+        <button class="retro-btn pink" onclick="submitPolaroidModal()">[ save photo ]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       MODAL 4: RETRO CONFIRMATION DIALOG (No browser popup!)
+       ========================================================== -->
+  <div class="modal-backdrop" id="confirmModal">
+    <div class="modal-window" style="max-width: 380px; text-align: center;">
+      <div class="modal-title">
+        <span>&hearts; CONFIRM ACTION &hearts;</span>
+      </div>
+      <p id="confirm-modal-text" style="margin: 16px 0; color: var(--pale-lavender); font-size: 13px;">Are you sure?</p>
+      <div style="display: flex; justify-content: center; gap: 14px;">
+        <button class="retro-btn" onclick="closeModal('confirmModal')">[ NO, CANCEL ]</button>
+        <button class="retro-btn pink" id="confirm-modal-ok-btn">[ YES, DELETE ]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT ENGINE -->
   <script>
-    /* ==========================================================
-       1. FIREBASE CONFIGURATION
-       ========================================================== */
-   const firebaseConfig = {
-  apiKey: "AIzaSyBDoQxZfWm31DI1zmKNGtEUMRT9VBdbVtc",
-  authDomain: "kittylailacat.firebaseapp.com",
-  projectId: "kittylailacat",
-  storageBucket: "kittylailacat.firebasestorage.app",
-  messagingSenderId: "230809478219",
-  appId: "1:230809478219:web:6a7c4e53f0976ebad319ce",
-  measurementId: "G-GN550ZJFRP"
-};
+    /* 1. FIREBASE INITIALIZATION */
+    const firebaseConfig = {
+      apiKey: "AIzaSyBDoQxZfWm31DI1zmKNGtEUMRT9VBdbVtc",
+      authDomain: "kittylailacat.firebaseapp.com",
+      projectId: "kittylailacat",
+      storageBucket: "kittylailacat.firebasestorage.app",
+      messagingSenderId: "230809478219",
+      appId: "1:230809478219:web:6a7c4e53f0976ebad319ce",
+      measurementId: "G-GN550ZJFRP"
+    };
 
     let db = null;
     let auth = null;
     let isFirebaseReady = false;
 
     try {
-      if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("PASTE_YOUR")) {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore();
-        auth = firebase.auth();
-        isFirebaseReady = true;
-      }
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
+      auth = firebase.auth();
+      isFirebaseReady = true;
     } catch (e) {
-      console.warn("Firebase not loaded, using local storage fallback:", e);
+      console.warn("Firebase initialization notice:", e);
     }
 
-    // Default Seed Data
+    // Default Site Content
     const INITIAL_DATA = {
       site: {
         title: 'kittylailacat',
         subtitle: 'welcome to lailaland ~ mrow',
         statusText: 'currently offline',
         isOnline: false,
-        greetingText: 'hello visitor <3\nwelcome to my little private corner of cyberspace. this is my personal sanctuary for late night thoughts, photos, and dreams.',
+        greetingHeader: 'greeting:',
+        greetingText: '<strong style="color: var(--accent-pink);">hello visitor &lt;3</strong><br>welcome to my little private corner of cyberspace. this is my personal sanctuary for late night thoughts, photos, and dreams.',
         greetingImg: 'images/photo2.jpg',
         greetingCaption: '10/10/26 laila <3',
-        dearInternetText: "this website is written by me, for me. a place preserved from the noise of modern algorithms. don't take anything here too seriously. ~"
+        dearInternetHeader: 'dear internet...',
+        dearInternetText: "this website is written by me, for me. a place preserved from the noise of modern algorithms. don't take anything here too seriously. ~",
+        aboutMeTitle: 'About Me',
+        currentlyTitle: 'Currently',
+        favTitle: 'Favorite Things',
+        updatesTitle: 'Updates',
+        stampsTitle: 'Stamps & Blinkies',
+        memoriesHeader: 'memories // digital scrapbook',
+        memoriesDesc: 'polaroids, low-res flash photos, and moments saved in time.',
+        aboutHeader: 'about me // survey',
+        footer1: 'kittylailacat &copy; 2006-2026 &bull; made with love, boredom and too much internet'
       },
       profile: {
         name: 'laila',
         displayName: 'laila',
         avatar: 'images/avatar.jpg',
-        bio: 'mrowwwwwwwwwwwwwwwwwwwwww',
+        bio: '"mrowwwwwwwwwwwwwwwwwwwwww"',
+        curr1_lbl: 'Listening to:',
         listening: 'nettspend',
+        curr2_lbl: 'Watching:',
         watching: 'da bois',
+        curr3_lbl: 'Reading:',
         reading: 'yaoi',
+        curr4_lbl: 'Feeling:',
         feeling: 'Tired.',
+        curr5_lbl: 'Thinking about:',
         thinking: 'my boyfriend liam',
-        favorites: '♥ my boyfriend',
-        updates: 'no'
+        favorites: '&hearts; my boyfriend',
+        updates: 'no',
+        catArt: '  /\\_/\\  \n ( o.o ) \n  > ^ <  mrow!'
       },
+      badges: [
+        { id: 'b1', text: '♥ LIAM ♥', isPink: true },
+        { id: 'b2', text: 'ᓚᘏᗢ NETTSPEND', isPink: false },
+        { id: 'b3', text: 'BEST VIEWED 1024x768', isPink: true },
+        { id: 'b4', text: 'TIRED 24/7', isPink: false }
+      ],
       survey: [
         { label: 'intro:', val: 'n/a' },
         { label: 'favourite music:', val: 'nettspend' },
@@ -821,58 +940,128 @@
     };
 
     let appData = (function() {
-      const stored = localStorage.getItem('kittylailacat_data');
+      const stored = localStorage.getItem('kittylailacat_data_v2');
       return stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(INITIAL_DATA));
     })();
 
     let currentUser = null;
 
-    // Listen for Auth changes
+    // Firebase Auth State
     if (isFirebaseReady) {
       auth.onAuthStateChanged(user => {
         currentUser = user;
         updateAdminModeUI();
       });
 
-      // Realtime listener for Site Configuration
+      // Realtime listener for Site Content
       db.collection('site_config').doc('main').onSnapshot(doc => {
         if (doc.exists) {
-          const cloudData = doc.data();
-          if (cloudData.site) appData.site = cloudData.site;
-          if (cloudData.profile) appData.profile = cloudData.profile;
-          if (cloudData.survey) appData.survey = cloudData.survey;
-          if (cloudData.memories) appData.memories = cloudData.memories;
+          const cloud = doc.data();
+          if (cloud.site) appData.site = Object.assign(appData.site, cloud.site);
+          if (cloud.profile) appData.profile = Object.assign(appData.profile, cloud.profile);
+          if (cloud.survey) appData.survey = cloud.survey;
+          if (cloud.memories) appData.memories = cloud.memories;
+          if (cloud.badges) appData.badges = cloud.badges;
           renderSite();
         } else {
           db.collection('site_config').doc('main').set({
             site: appData.site,
             profile: appData.profile,
             survey: appData.survey,
-            memories: appData.memories
+            memories: appData.memories,
+            badges: appData.badges
           });
         }
       });
 
-      // Realtime listener for Diary Posts
-      db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-        if (!snapshot.empty) {
-          appData.posts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      // Realtime listener for Posts
+      db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snap => {
+        if (!snap.empty) {
+          appData.posts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         }
         renderPosts();
       });
     }
 
-    // 2. Authentication
+    /* 2. CUSTOM RETRO TOAST (replaces alert) */
+    function showToast(msg) {
+      const t = document.getElementById('retro-toast');
+      t.innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    /* 3. RETRO CONFIRMATION (replaces confirm) */
+    function showRetroConfirm(msg, onConfirm) {
+      document.getElementById('confirm-modal-text').innerText = msg;
+      const okBtn = document.getElementById('confirm-modal-ok-btn');
+      okBtn.onclick = () => {
+        closeModal('confirmModal');
+        onConfirm();
+      };
+      openModal('confirmModal');
+    }
+
+    /* 4. MODAL UTILITIES */
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+    /* 5. IMAGE COMPRESSION (FOR IPHONE CAMERA ROLL & FAST FIRESTORE SYNC) */
+    function handleImageFileSelect(event, previewImgId, base64InputId) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          // Resize image on mobile canvas to prevent exceeding limits
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 900;
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Compress to lightweight JPEG
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          document.getElementById(base64InputId).value = dataUrl;
+          const previewEl = document.getElementById(previewImgId);
+          previewEl.src = dataUrl;
+          previewEl.parentElement.style.display = 'block';
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearPostPreview() {
+      document.getElementById('post-file-input').value = '';
+      document.getElementById('post-img-base64').value = '';
+      document.getElementById('post-img-preview').src = '';
+      document.getElementById('post-img-preview-box').style.display = 'none';
+    }
+
+    /* 6. ADMIN TOGGLE & DIRECT EDITING ACTIVATION */
     function handleAuthClick() {
       if (currentUser) {
         saveAllInlineEditsToCloud();
       } else {
-        document.getElementById('loginModal').classList.add('open');
+        openModal('loginModal');
       }
-    }
-
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.remove('open');
     }
 
     function submitFirebaseLogin() {
@@ -880,28 +1069,28 @@
       const pass = document.getElementById('login-pass').value.trim();
 
       if (!isFirebaseReady) {
-        alert("Please connect Firebase keys in index.html first! (Saving locally for now)");
-        currentUser = { email: "local_admin" };
+        showToast("Firebase not initialized! Using local admin mode.");
+        currentUser = { email: "local" };
         updateAdminModeUI();
-        closeLoginModal();
+        closeModal('loginModal');
         return;
       }
 
       auth.signInWithEmailAndPassword(email, pass)
         .then(() => {
-          closeLoginModal();
-          alert("Admin mode unlocked! You can now click and edit anything directly on the page. ♥");
+          closeModal('loginModal');
+          showToast("Welcome Laila! Admin mode unlocked. Click any text to edit! ♥");
         })
-        .catch(err => alert("Login error: " + err.message));
+        .catch(err => showToast("Login failed: " + err.message));
     }
 
     function logoutFirebase() {
       if (isFirebaseReady) auth.signOut();
       currentUser = null;
       updateAdminModeUI();
+      showToast("Logged out of Admin Mode.");
     }
 
-    // 3. Admin Mode & ContentEditable Toggle
     function updateAdminModeUI() {
       const adminBar = document.getElementById('admin-bar');
       const loginBtn = document.getElementById('login-toggle-btn');
@@ -917,24 +1106,15 @@
         loginBtn.innerText = '[ ✎ admin login ]';
       }
 
-      // Toggle contenteditable on direct elements
-      const editableIds = [
-        'el-site-title', 'el-site-sub', 'el-status-text',
-        'el-profile-name', 'el-display-name', 'el-bio',
-        'el-curr-listening', 'el-curr-watching', 'el-curr-reading',
-        'el-curr-feeling', 'el-curr-thinking', 'el-favorite-things',
-        'el-updates', 'el-dear-internet-text', 'el-greeting-caption'
-      ];
-
-      editableIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.contentEditable = isAdmin ? "true" : "false";
+      // Make ALL marked text elements directly editable on the webpage
+      document.querySelectorAll('.editable-any').forEach(el => {
+        el.contentEditable = isAdmin ? "true" : "false";
       });
 
       renderSite();
     }
 
-    // 4. Tab Navigation
+    /* 7. TAB ROUTING */
     function switchTab(tabName) {
       document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
@@ -943,52 +1123,83 @@
       const link = document.getElementById('tab-' + tabName);
       if (target) target.classList.add('active');
       if (link) link.classList.add('active');
-      window.scrollTo({ top: 100, behavior: 'smooth' });
+      window.scrollTo({ top: 90, behavior: 'smooth' });
     }
 
-    // 5. Render Site
+    /* 8. RENDER ALL PAGE CONTENT */
     function renderSite() {
-      document.getElementById('page-title').innerText = `${appData.site.title} :: ${appData.site.subtitle}`;
-      document.getElementById('el-site-title').innerText = appData.site.title;
-      document.getElementById('el-site-sub').innerText = appData.site.subtitle;
-      document.getElementById('el-status-text').innerText = appData.site.statusText;
+      const s = appData.site;
+      const p = appData.profile;
+
+      document.getElementById('page-title').innerText = `${s.title} :: ${s.subtitle}`;
+      document.getElementById('el-site-title').innerText = s.title;
+      document.getElementById('el-site-sub').innerText = s.subtitle;
+      document.getElementById('el-status-text').innerText = s.statusText;
 
       const dot = document.getElementById('el-status-dot');
-      if (appData.site.isOnline) dot.classList.add('online');
+      if (s.isOnline) dot.classList.add('online');
       else dot.classList.remove('online');
 
-      document.getElementById('el-profile-name').innerText = appData.profile.name;
-      document.getElementById('el-display-name').innerText = appData.profile.displayName;
-      document.getElementById('el-bio').innerText = appData.profile.bio;
-      document.getElementById('el-profile-img').setAttribute('href', appData.profile.avatar);
+      document.getElementById('el-greeting-header').innerText = s.greetingHeader || 'greeting:';
+      document.getElementById('el-greeting-text').innerHTML = s.greetingText;
+      document.getElementById('el-greeting-img').src = s.greetingImg;
+      document.getElementById('el-greeting-caption').innerText = s.greetingCaption;
 
-      document.getElementById('el-curr-listening').innerText = appData.profile.listening;
-      document.getElementById('el-curr-watching').innerText = appData.profile.watching;
-      document.getElementById('el-curr-reading').innerText = appData.profile.reading;
-      document.getElementById('el-curr-feeling').innerText = appData.profile.feeling;
-      document.getElementById('el-curr-thinking').innerText = appData.profile.thinking;
-      document.getElementById('el-favorite-things').innerText = appData.profile.favorites;
-      document.getElementById('el-updates').innerText = appData.profile.updates;
+      document.getElementById('el-dear-internet-header').innerText = s.dearInternetHeader || 'dear internet...';
+      document.getElementById('el-dear-internet-text').innerText = s.dearInternetText;
 
-      document.getElementById('el-dear-internet-text').innerText = appData.site.dearInternetText;
-      document.getElementById('el-greeting-img').src = appData.site.greetingImg;
-      document.getElementById('el-greeting-caption').innerText = appData.site.greetingCaption;
+      document.getElementById('el-about-me-title').innerText = s.aboutMeTitle || 'About Me';
+      document.getElementById('el-profile-name').innerText = p.name;
+      document.getElementById('el-display-name').innerText = p.displayName;
+      document.getElementById('el-bio').innerText = p.bio;
+      document.getElementById('el-profile-img').setAttribute('href', p.avatar);
 
-      // Survey Table with inline edit support
+      document.getElementById('el-currently-title').innerText = s.currentlyTitle || 'Currently';
+      document.getElementById('lbl-curr-1').innerText = p.curr1_lbl || 'Listening to:';
+      document.getElementById('el-curr-listening').innerText = p.listening;
+      document.getElementById('lbl-curr-2').innerText = p.curr2_lbl || 'Watching:';
+      document.getElementById('el-curr-watching').innerText = p.watching;
+      document.getElementById('lbl-curr-3').innerText = p.curr3_lbl || 'Reading:';
+      document.getElementById('el-curr-reading').innerText = p.reading;
+      document.getElementById('lbl-curr-4').innerText = p.curr4_lbl || 'Feeling:';
+      document.getElementById('el-curr-feeling').innerText = p.feeling;
+      document.getElementById('lbl-curr-5').innerText = p.curr5_lbl || 'Thinking about:';
+      document.getElementById('el-curr-thinking').innerText = p.thinking;
+
+      document.getElementById('el-fav-title').innerText = s.favTitle || 'Favorite Things';
+      document.getElementById('el-favorite-things').innerHTML = p.favorites;
+
+      document.getElementById('el-updates-title').innerText = s.updatesTitle || 'Updates';
+      document.getElementById('el-updates').innerText = p.updates;
+
+      document.getElementById('el-stamps-title').innerText = s.stampsTitle || 'Stamps & Blinkies';
+      document.getElementById('el-cat-art').innerText = p.catArt || '  /\\_/\\  \n ( o.o ) \n  > ^ <  mrow!';
+
+      document.getElementById('el-memories-header').innerText = s.memoriesHeader || 'memories // digital scrapbook';
+      document.getElementById('el-memories-desc').innerText = s.memoriesDesc || 'polaroids, low-res flash photos, and moments saved in time.';
+
+      document.getElementById('el-about-header').innerText = s.aboutHeader || 'about me // survey';
+      document.getElementById('el-footer-1').innerHTML = s.footer1 || 'kittylailacat &copy; 2006-2026';
+
+      // Render Survey
       const surveyTbl = document.getElementById('survey-table-body');
       surveyTbl.innerHTML = appData.survey.map((item, idx) => `
         <tr>
-          <td class="label-col" ${currentUser ? `contenteditable="true" id="survey-lbl-${idx}"` : ''}>${escapeHtml(item.label)}</td>
-          <td class="val-col" ${currentUser ? `contenteditable="true" id="survey-val-${idx}"` : ''}>${escapeHtml(item.val)}</td>
+          <td class="label-col editable-any" id="survey-lbl-${idx}">${escapeHtml(item.label)}</td>
+          <td class="val-col editable-any" id="survey-val-${idx}">${escapeHtml(item.val)}</td>
         </tr>
       `).join('');
 
-      // Scrapbook Polaroids Grid
+      // Re-apply contenteditable if in admin mode
+      if (currentUser) {
+        document.querySelectorAll('.editable-any').forEach(el => el.contentEditable = "true");
+      }
+
       renderMemories();
       renderPosts();
     }
 
-    // Render Memories & Polaroid Add Card
+    /* 9. RENDER MEMORIES / POLAROIDS */
     function renderMemories() {
       const grid = document.getElementById('memories-grid');
       const isAdmin = currentUser !== null;
@@ -997,28 +1208,31 @@
       appData.memories.forEach((m, idx) => {
         const card = document.createElement('div');
         card.className = 'polaroid-frame';
-        card.style.width = '100%';
         card.innerHTML = `
           <button class="polaroid-delete-btn" onclick="deleteMemoryPhoto(${idx})">&times;</button>
           <div class="washi-tape-top"></div>
-          <img class="admin-swappable-img" src="${m.img}" alt="memory" onerror="this.src='https://picsum.photos/seed/${idx}/300/300'" onclick="swapMemoryImage(${idx})">
-          <div class="polaroid-caption" ${isAdmin ? `contenteditable="true" id="pol-cap-${idx}"` : ''}>${escapeHtml(m.caption)}</div>
+          <img class="admin-swappable-img" src="${m.img}" alt="memory" onerror="this.src='https://picsum.photos/seed/${idx}/300/300'" onclick="triggerPhotoSwap('memory', ${idx})">
+          <div class="polaroid-caption editable-any" id="pol-cap-${idx}">${escapeHtml(m.caption)}</div>
         `;
         grid.appendChild(card);
       });
 
-      // Add Polaroid Button Card
+      // + ADD POLAROID CARD
       const addCard = document.createElement('div');
       addCard.className = 'add-polaroid-card';
       addCard.innerHTML = `
-        <div style="font-size: 24px; margin-bottom: 6px;">+</div>
-        <div>ADD NEW POLAROID</div>
+        <div style="font-size: 26px; margin-bottom: 4px;">+</div>
+        <div>ADD POLAROID<br><span style="font-size:10px; color:var(--dusty-pink);">(camera roll)</span></div>
       `;
-      addCard.onclick = addNewPolaroidPrompt;
+      addCard.onclick = () => triggerPhotoSwap('new_memory');
       grid.appendChild(addCard);
+
+      if (isAdmin) {
+        document.querySelectorAll('.polaroid-caption').forEach(el => el.contentEditable = "true");
+      }
     }
 
-    // Render Posts
+    /* 10. RENDER POSTS & PREVIOUS ENTRIES */
     function renderPosts() {
       const container = document.getElementById('posts-container');
       const archiveContainer = document.getElementById('archive-posts-list');
@@ -1026,13 +1240,17 @@
       archiveContainer.innerHTML = '';
 
       appData.posts.forEach((post) => {
+        // Feed Card
         const postCard = document.createElement('article');
         postCard.className = 'retro-box';
         postCard.innerHTML = `
           <div class="retro-box-header">
             <span>post :: ${escapeHtml(post.title)}</span>
             ${currentUser ? `
-              <button class="retro-btn" style="padding: 1px 6px; font-size: 10px; color: #ff72bd;" onclick="deletePost('${post.id}')">[ delete ]</button>
+              <div style="display: flex; gap: 6px;">
+                <button class="retro-btn" style="padding: 1px 6px; font-size: 10px;" onclick="openEditPostModal('${post.id}')">[ ✎ edit ]</button>
+                <button class="retro-btn" style="padding: 1px 6px; font-size: 10px; color: #ff72bd;" onclick="deletePost('${post.id}')">[ ✖ delete ]</button>
+              </div>
             ` : '<span>&hearts;</span>'}
           </div>
           <div class="retro-box-body">
@@ -1049,7 +1267,7 @@
                 <div style="text-align: center; margin: 16px 0;">
                   <div class="polaroid-frame">
                     <div class="washi-tape-top"></div>
-                    <img class="admin-swappable-img" src="${post.image}" alt="post photo" style="width: 220px; height: 230px;" onerror="this.src='https://picsum.photos/seed/laila1/300/300'" onclick="swapPostImage('${post.id}')">
+                    <img class="admin-swappable-img" src="${post.image}" alt="post photo" style="width: 220px; height: 230px;" onerror="this.src='https://picsum.photos/seed/laila1/300/300'" onclick="triggerPhotoSwap('post_img', '${post.id}')">
                     <div class="polaroid-caption">${escapeHtml(post.date)} &bull; laila &lt;3</div>
                   </div>
                 </div>
@@ -1059,77 +1277,92 @@
         `;
         container.appendChild(postCard);
 
+        // Archive List Item
         const arcItem = document.createElement('div');
-        arcItem.style.cssText = "padding: 8px 0; border-bottom: 1px dashed var(--border-purple);";
+        arcItem.style.cssText = "padding: 10px 0; border-bottom: 1px dashed var(--border-purple); display: flex; justify-content: space-between; align-items: center;";
         arcItem.innerHTML = `
-          <span style="color: var(--accent-pink); font-family: 'VT323', monospace; font-size: 16px;">[${escapeHtml(post.date)}]</span>
-          <strong style="color: var(--pale-lavender); margin-left: 8px;">${escapeHtml(post.title)}</strong>
+          <div>
+            <span style="color: var(--accent-pink); font-family: 'VT323', monospace; font-size: 18px;">[${escapeHtml(post.date)}]</span>
+            <strong style="color: var(--pale-lavender); margin-left: 8px;">${escapeHtml(post.title)}</strong>
+          </div>
+          ${currentUser ? `
+            <div>
+              <button class="retro-btn" style="padding: 1px 6px; font-size: 10px;" onclick="openEditPostModal('${post.id}')">edit</button>
+            </div>
+          ` : ''}
         `;
         archiveContainer.appendChild(arcItem);
       });
-
-      document.getElementById('archive-count').innerText = `${appData.posts.length} entries`;
     }
 
-    // 6. Direct Picture Swapping Functions
-    function swapAvatarImage() {
+    /* 11. SWAPPING & ADDING PHOTOS (IPHONE / FILE PICKER MODAL) */
+    function triggerPhotoSwap(type, extraId = null) {
       if (!currentUser) return;
-      const newUrl = prompt("Enter new avatar image path or URL:", appData.profile.avatar);
-      if (newUrl) {
-        appData.profile.avatar = newUrl.trim();
-        saveAllInlineEditsToCloud();
+
+      document.getElementById('polaroid-target-type').value = type;
+      document.getElementById('polaroid-target-idx').value = extraId !== null ? extraId : '';
+      document.getElementById('polaroid-file-input').value = '';
+      document.getElementById('pol-img-base64').value = '';
+      document.getElementById('pol-img-preview').src = '';
+      document.getElementById('pol-img-preview-box').style.display = 'none';
+
+      const heading = document.getElementById('pol-modal-heading');
+      const capGroup = document.getElementById('pol-caption-group');
+
+      if (type === 'new_memory') {
+        heading.innerText = '✦ PIN NEW POLAROID';
+        capGroup.style.display = 'block';
+        document.getElementById('pol-caption-input').value = '10/10/26 • late night';
+      } else if (type === 'memory') {
+        heading.innerText = '✦ SWAP POLAROID PHOTO';
+        capGroup.style.display = 'none';
+      } else {
+        heading.innerText = '✦ SWAP PHOTO';
+        capGroup.style.display = 'none';
       }
+
+      openModal('polaroidModal');
     }
 
-    function swapImageDirectly(imgElementId) {
-      if (!currentUser) return;
-      const imgEl = document.getElementById(imgElementId);
-      const newUrl = prompt("Enter image path or web URL:", imgEl.src);
-      if (newUrl) {
-        imgEl.src = newUrl.trim();
-        if (imgElementId === 'el-greeting-img') appData.site.greetingImg = newUrl.trim();
-        saveAllInlineEditsToCloud();
+    function submitPolaroidModal() {
+      const type = document.getElementById('polaroid-target-type').value;
+      const idx = document.getElementById('polaroid-target-idx').value;
+      const imgBase64 = document.getElementById('pol-img-base64').value;
+      const caption = document.getElementById('pol-caption-input').value.trim();
+
+      if (!imgBase64) {
+        showToast("Please choose a photo from your files/camera roll first!");
+        return;
       }
-    }
 
-    function swapMemoryImage(idx) {
-      if (!currentUser) return;
-      const newUrl = prompt("Enter new image path or URL for this polaroid:", appData.memories[idx].img);
-      if (newUrl) {
-        appData.memories[idx].img = newUrl.trim();
-        saveAllInlineEditsToCloud();
+      if (type === 'profile_avatar') {
+        appData.profile.avatar = imgBase64;
+      } else if (type === 'site_greeting') {
+        appData.site.greetingImg = imgBase64;
+      } else if (type === 'memory') {
+        appData.memories[idx].img = imgBase64;
+      } else if (type === 'new_memory') {
+        appData.memories.push({
+          img: imgBase64,
+          caption: caption || '10/10/26'
+        });
+      } else if (type === 'post_img') {
+        if (isFirebaseReady) {
+          db.collection('posts').doc(idx).update({ image: imgBase64 });
+        }
       }
-    }
 
-    function swapPostImage(postId) {
-      if (!currentUser) return;
-      const post = appData.posts.find(p => p.id === postId);
-      if (!post) return;
-      const newUrl = prompt("Enter new photo URL for this post:", post.image);
-      if (newUrl && isFirebaseReady) {
-        db.collection('posts').doc(postId).update({ image: newUrl.trim() });
-      }
-    }
-
-    // 7. Adding & Deleting Polaroids
-    function addNewPolaroidPrompt() {
-      const img = prompt("Enter image file path or web link (e.g. images/photo3.jpg):", "images/photo1.jpg");
-      if (!img) return;
-      const caption = prompt("Enter date and caption (e.g. 10/10/26 • late night):", "10/10/26 • cute");
-      
-      appData.memories.push({
-        img: img.trim(),
-        caption: (caption || "10/10/26").trim()
-      });
-
+      closeModal('polaroidModal');
       saveAllInlineEditsToCloud();
+      showToast("Photo updated successfully! ♥");
     }
 
     function deleteMemoryPhoto(idx) {
-      if (confirm("Remove this polaroid from your scrapbook?")) {
+      showRetroConfirm("Delete this polaroid from your scrapbook?", () => {
         appData.memories.splice(idx, 1);
         saveAllInlineEditsToCloud();
-      }
+        showToast("Polaroid deleted.");
+      });
     }
 
     function toggleOnlineStatus() {
@@ -1139,109 +1372,175 @@
       saveAllInlineEditsToCloud();
     }
 
-    // 8. SAVE ALL DIRECT ON-PAGE EDITS TO FIREBASE
+    /* 12. SAVE ALL ON-PAGE EDITS TO FIREBASE (ANY TEXT ELEMENT) */
     function saveAllInlineEditsToCloud() {
       if (!currentUser) return;
 
-      // Extract text directly from what the user typed on the page
-      appData.site.title = document.getElementById('el-site-title').innerText.trim();
-      appData.site.subtitle = document.getElementById('el-site-sub').innerText.trim();
-      appData.site.statusText = document.getElementById('el-status-text').innerText.trim();
-      appData.site.dearInternetText = document.getElementById('el-dear-internet-text').innerText.trim();
-      appData.site.greetingCaption = document.getElementById('el-greeting-caption').innerText.trim();
+      const s = appData.site;
+      const p = appData.profile;
 
-      appData.profile.name = document.getElementById('el-profile-name').innerText.trim();
-      appData.profile.displayName = document.getElementById('el-display-name').innerText.trim();
-      appData.profile.bio = document.getElementById('el-bio').innerText.trim();
+      s.title = document.getElementById('el-site-title').innerText.trim();
+      s.subtitle = document.getElementById('el-site-sub').innerText.trim();
+      s.statusText = document.getElementById('el-status-text').innerText.trim();
+      s.greetingHeader = document.getElementById('el-greeting-header').innerText.trim();
+      s.greetingText = document.getElementById('el-greeting-text').innerHTML.trim();
+      s.greetingCaption = document.getElementById('el-greeting-caption').innerText.trim();
+      s.dearInternetHeader = document.getElementById('el-dear-internet-header').innerText.trim();
+      s.dearInternetText = document.getElementById('el-dear-internet-text').innerText.trim();
+      s.aboutMeTitle = document.getElementById('el-about-me-title').innerText.trim();
+      s.currentlyTitle = document.getElementById('el-currently-title').innerText.trim();
+      s.favTitle = document.getElementById('el-fav-title').innerText.trim();
+      s.updatesTitle = document.getElementById('el-updates-title').innerText.trim();
+      s.stampsTitle = document.getElementById('el-stamps-title').innerText.trim();
+      s.memoriesHeader = document.getElementById('el-memories-header').innerText.trim();
+      s.memoriesDesc = document.getElementById('el-memories-desc').innerText.trim();
+      s.aboutHeader = document.getElementById('el-about-header').innerText.trim();
+      s.footer1 = document.getElementById('el-footer-1').innerHTML.trim();
 
-      appData.profile.listening = document.getElementById('el-curr-listening').innerText.trim();
-      appData.profile.watching = document.getElementById('el-curr-watching').innerText.trim();
-      appData.profile.reading = document.getElementById('el-curr-reading').innerText.trim();
-      appData.profile.feeling = document.getElementById('el-curr-feeling').innerText.trim();
-      appData.profile.thinking = document.getElementById('el-curr-thinking').innerText.trim();
-      appData.profile.favorites = document.getElementById('el-favorite-things').innerText.trim();
-      appData.profile.updates = document.getElementById('el-updates').innerText.trim();
+      p.name = document.getElementById('el-profile-name').innerText.trim();
+      p.displayName = document.getElementById('el-display-name').innerText.trim();
+      p.bio = document.getElementById('el-bio').innerText.trim();
+      p.curr1_lbl = document.getElementById('lbl-curr-1').innerText.trim();
+      p.listening = document.getElementById('el-curr-listening').innerText.trim();
+      p.curr2_lbl = document.getElementById('lbl-curr-2').innerText.trim();
+      p.watching = document.getElementById('el-curr-watching').innerText.trim();
+      p.curr3_lbl = document.getElementById('lbl-curr-3').innerText.trim();
+      p.reading = document.getElementById('el-curr-reading').innerText.trim();
+      p.curr4_lbl = document.getElementById('lbl-curr-4').innerText.trim();
+      p.feeling = document.getElementById('el-curr-feeling').innerText.trim();
+      p.curr5_lbl = document.getElementById('lbl-curr-5').innerText.trim();
+      p.thinking = document.getElementById('el-curr-thinking').innerText.trim();
+      p.favorites = document.getElementById('el-favorite-things').innerHTML.trim();
+      p.updates = document.getElementById('el-updates').innerText.trim();
+      p.catArt = document.getElementById('el-cat-art').innerText;
 
-      // Extract polaroid captions directly from screen
+      // Extract polaroid captions
       appData.memories.forEach((m, idx) => {
-        const capEl = document.getElementById('pol-cap-' + idx);
-        if (capEl) m.caption = capEl.innerText.trim();
+        const cap = document.getElementById('pol-cap-' + idx);
+        if (cap) m.caption = cap.innerText.trim();
       });
 
-      // Extract survey table edits
-      appData.survey.forEach((s, idx) => {
-        const lblEl = document.getElementById('survey-lbl-' + idx);
-        const valEl = document.getElementById('survey-val-' + idx);
-        if (lblEl) s.label = lblEl.innerText.trim();
-        if (valEl) s.val = valEl.innerText.trim();
+      // Extract survey rows
+      appData.survey.forEach((item, idx) => {
+        const lbl = document.getElementById('survey-lbl-' + idx);
+        const val = document.getElementById('survey-val-' + idx);
+        if (lbl) item.label = lbl.innerText.trim();
+        if (val) item.val = val.innerText.trim();
       });
 
-      // Local save
-      localStorage.setItem('kittylailacat_data', JSON.stringify(appData));
+      // Save to localStorage backup
+      localStorage.setItem('kittylailacat_data_v2', JSON.stringify(appData));
 
-      // Cloud save
+      // Push to Firestore Cloud
       if (isFirebaseReady) {
         db.collection('site_config').doc('main').set({
           site: appData.site,
           profile: appData.profile,
           survey: appData.survey,
-          memories: appData.memories
+          memories: appData.memories,
+          badges: appData.badges
         }).then(() => {
-          alert("Saved directly to cloud! Everything on screen is updated everywhere! ♥");
+          showToast("Changes permanently saved to the cloud everywhere! ♥");
           renderSite();
-        }).catch(err => alert("Firebase error: " + err.message));
+        }).catch(err => showToast("Firebase save error: " + err.message));
       } else {
-        alert("Saved locally! (Paste Firebase keys to sync across internet)");
+        showToast("Saved to local storage!");
         renderSite();
       }
     }
 
-    // 9. Post Management
-    function openNewPostModal() {
-      document.getElementById('postModal').classList.add('open');
-    }
-    function closePostModal() {
-      document.getElementById('postModal').classList.remove('open');
+    /* 13. POST CREATION & EDITING */
+    function openPostModal() {
+      document.getElementById('post-modal-heading').innerText = '✎ WRITE DIARY ENTRY';
+      document.getElementById('editing-post-id').value = '';
+      document.getElementById('post-title-input').value = '';
+      document.getElementById('post-date-input').value = new Date().toLocaleDateString('en-GB');
+      document.getElementById('post-mood-input').value = '';
+      document.getElementById('post-body-input').value = '';
+      clearPostPreview();
+      openModal('postModal');
     }
 
-    function publishNewPost() {
+    function openEditPostModal(postId) {
+      const post = appData.posts.find(p => p.id === postId);
+      if (!post) return;
+
+      document.getElementById('post-modal-heading').innerText = '✎ EDIT DIARY ENTRY';
+      document.getElementById('editing-post-id').value = post.id;
+      document.getElementById('post-title-input').value = post.title;
+      document.getElementById('post-date-input').value = post.date;
+      document.getElementById('post-mood-input').value = post.mood || '';
+      document.getElementById('post-body-input').value = post.body;
+
+      if (post.image) {
+        document.getElementById('post-img-base64').value = post.image;
+        document.getElementById('post-img-preview').src = post.image;
+        document.getElementById('post-img-preview-box').style.display = 'block';
+      } else {
+        clearPostPreview();
+      }
+
+      openModal('postModal');
+    }
+
+    function savePostToCloud() {
+      const id = document.getElementById('editing-post-id').value;
       const title = document.getElementById('post-title-input').value.trim();
       const body = document.getElementById('post-body-input').value.trim();
       const date = document.getElementById('post-date-input').value.trim() || '10/10/26';
       const mood = document.getElementById('post-mood-input').value.trim();
-      const img = document.getElementById('post-img-input').value.trim();
+      const img = document.getElementById('post-img-base64').value;
 
       if (!title || !body) {
-        alert("Please provide both title and body text!");
+        showToast("Please include both a title and body text!");
         return;
       }
 
-      const newPost = { title, body, date, mood, image: img, timestamp: Date.now() };
+      const postData = {
+        title, body, date, mood,
+        image: img || '',
+        timestamp: Date.now()
+      };
 
       if (isFirebaseReady) {
-        db.collection('posts').add(newPost).then(() => {
-          closePostModal();
-          switchTab('home');
-        });
+        if (id) {
+          db.collection('posts').doc(id).update(postData).then(() => {
+            closeModal('postModal');
+            showToast("Diary entry updated! ♥");
+          });
+        } else {
+          db.collection('posts').add(postData).then(() => {
+            closeModal('postModal');
+            switchTab('home');
+            showToast("Diary entry published! ♥");
+          });
+        }
       } else {
-        newPost.id = 'post-' + Date.now();
-        appData.posts.unshift(newPost);
-        localStorage.setItem('kittylailacat_data', JSON.stringify(appData));
-        closePostModal();
+        if (id) {
+          const idx = appData.posts.findIndex(p => p.id === id);
+          if (idx !== -1) appData.posts[idx] = Object.assign(postData, { id });
+        } else {
+          postData.id = 'post-' + Date.now();
+          appData.posts.unshift(postData);
+        }
+        localStorage.setItem('kittylailacat_data_v2', JSON.stringify(appData));
+        closeModal('postModal');
         renderPosts();
-        switchTab('home');
+        showToast("Entry saved!");
       }
     }
 
-    function deletePost(id) {
-      if (confirm("Delete this diary post forever?")) {
-        if (isFirebaseReady) db.collection('posts').doc(id).delete();
-        else {
-          appData.posts = appData.posts.filter(p => p.id !== id);
-          localStorage.setItem('kittylailacat_data', JSON.stringify(appData));
+    function deletePost(postId) {
+      showRetroConfirm("Delete this diary post forever from the cloud?", () => {
+        if (isFirebaseReady) {
+          db.collection('posts').doc(postId).delete().then(() => showToast("Post deleted."));
+        } else {
+          appData.posts = appData.posts.filter(p => p.id !== postId);
+          localStorage.setItem('kittylailacat_data_v2', JSON.stringify(appData));
           renderPosts();
+          showToast("Post deleted.");
         }
-      }
+      });
     }
 
     function escapeHtml(str) {
