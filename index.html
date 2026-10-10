@@ -5,18 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="page-title">kittylailacat :: welcome to lailaland</title>
   
-  <!-- Retro Google Web Fonts -->
+  <!-- Retro Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Silkscreen:wght@400;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <!-- Firebase Web SDKs (CDN) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <style>
     :root {
       --bg-dark: #17131b;
       --panel-dark: #241c2b;
-      --panel-inner: #1c1622;
       --border-purple: #5c3d6e;
-      --border-outer: #372443;
       --accent-pink: #ff72bd;
       --dusty-pink: #d69ab9;
       --lilac: #b9a0d3;
@@ -56,7 +59,7 @@
       position: relative;
     }
 
-    /* Admin Floating Toolbar (Only shown when signed in) */
+    /* Floating Cloud Sync Admin Toolbar */
     #admin-bar {
       display: none;
       background: #2a0b1d;
@@ -321,7 +324,7 @@
     .modal-backdrop {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(10, 6, 14, 0.85);
+      background: rgba(10, 6, 14, 0.88);
       backdrop-filter: blur(2px);
       z-index: 9999;
       display: none;
@@ -409,13 +412,13 @@
 
   <div class="site-wrapper">
 
-    <!-- ADMIN ACTION BAR (Visible when signed in) -->
+    <!-- ADMIN CLOUD TOOLBAR -->
     <div id="admin-bar">
-      <div>✦ LOGGED IN AS LAILA (ADMIN MODE)</div>
+      <div>✦ LOGGED IN AS LAILA (CLOUD SYNC ACTIVE)</div>
       <div style="display: flex; gap: 8px;">
         <button class="retro-btn pink" onclick="openSettingsModal()">[ ⚙ EDIT SITE CONTENT ]</button>
         <button class="retro-btn" onclick="openPostModal()">[ + NEW POST ]</button>
-        <button class="retro-btn" onclick="logoutAdmin()">[ LOGOUT ]</button>
+        <button class="retro-btn" onclick="logoutFirebase()">[ LOGOUT ]</button>
       </div>
     </div>
 
@@ -443,10 +446,10 @@
         <span style="color: var(--dusty-pink);">✦</span>
       </ul>
 
-      <button class="retro-btn" id="login-toggle-btn" onclick="handleAuthClick()">[ ✎ admin ]</button>
+      <button class="retro-btn" id="login-toggle-btn" onclick="handleAuthClick()">[ ✎ admin login ]</button>
     </nav>
 
-    <!-- 3. Main Grid -->
+    <!-- 3. Main Two-Column Grid -->
     <div class="content-grid">
 
       <!-- LEFT COLUMN -->
@@ -455,7 +458,7 @@
         <!-- ================= HOME ================= -->
         <section id="view-home" class="view-panel active">
           
-          <!-- Optional Greeting Card -->
+          <!-- Optional Greeting Box -->
           <div class="retro-box" id="widget-greeting">
             <div class="retro-box-header">
               <span>greeting:</span>
@@ -489,8 +492,10 @@
             </div>
           </div>
 
-          <!-- Posts Container -->
-          <div id="posts-container"></div>
+          <!-- Diary Posts -->
+          <div id="posts-container">
+            <p style="color: var(--text-muted); padding: 10px;">connecting to cyberspace...</p>
+          </div>
 
         </section>
 
@@ -519,7 +524,6 @@
                 polaroids, low-res flash photos, and moments saved in time.
               </p>
               <div class="memories-grid" id="memories-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px;">
-                <!-- Dynamically rendered -->
               </div>
             </div>
           </div>
@@ -533,9 +537,7 @@
               <span>☆.。.:*・</span>
             </div>
             <div class="retro-box-body">
-              <table class="survey-table" id="survey-table-body">
-                <!-- Dynamically rendered from data -->
-              </table>
+              <table class="survey-table" id="survey-table-body"></table>
             </div>
           </div>
         </section>
@@ -708,7 +710,33 @@
   </div>
 
   <!-- ==========================================================
-       MODAL: FULL SITE CUSTOMIZER (EDIT EVERYTHING)
+       MODAL 1: FIREBASE EMAIL/PASSWORD LOGIN
+       ========================================================== -->
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal-window" style="max-width: 420px;">
+      <div class="modal-title">
+        <span>✎ ADMIN LOGIN</span>
+        <button style="background:none; border:none; color:var(--accent-pink); font-size:18px; cursor:pointer;" onclick="closeLoginModal()">&times;</button>
+      </div>
+
+      <div class="form-group">
+        <label>Admin Email:</label>
+        <input type="email" id="login-email" class="form-input" placeholder="laila@example.com">
+      </div>
+      <div class="form-group">
+        <label>Password:</label>
+        <input type="password" id="login-pass" class="form-input" placeholder="••••••••">
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
+        <button class="retro-btn" onclick="closeLoginModal()">[ CANCEL ]</button>
+        <button class="retro-btn pink" onclick="submitFirebaseLogin()">[ SIGN IN ]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       MODAL 2: SITE CUSTOMIZER (EDIT EVERYTHING)
        ========================================================== -->
   <div class="modal-backdrop" id="settingsModal">
     <div class="modal-window">
@@ -722,7 +750,6 @@
         <button class="tab-btn" onclick="switchSettingTab('set-profile')">Profile & Status</button>
         <button class="tab-btn" onclick="switchSettingTab('set-survey')">About Survey</button>
         <button class="tab-btn" onclick="switchSettingTab('set-toggles')">Turn Off Widgets</button>
-        <button class="tab-btn" onclick="switchSettingTab('set-security')">Password</button>
       </div>
 
       <!-- Tab: Header -->
@@ -774,15 +801,13 @@
 
       <!-- Tab: Survey -->
       <div id="set-survey" class="setting-tab-content" style="display: none;">
-        <p style="font-size: 12px; color: var(--dusty-pink); margin-bottom: 10px;">Edit any questionnaire response (leave blank or 'n/a' if not used):</p>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;" id="survey-inputs-grid">
-          <!-- Dynamically populated -->
-        </div>
+        <p style="font-size: 12px; color: var(--dusty-pink); margin-bottom: 10px;">Edit any questionnaire response:</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;" id="survey-inputs-grid"></div>
       </div>
 
-      <!-- Tab: Visibility Toggles (TURN OFF UNWANTED STUFF) -->
+      <!-- Tab: Visibility Toggles (TURN OFF UNWANTED WIDGETS) -->
       <div id="set-toggles" class="setting-tab-content" style="display: none;">
-        <p style="font-size: 12px; color: var(--dusty-pink); margin-bottom: 10px;">Uncheck anything you don't want to see on your page:</p>
+        <p style="font-size: 12px; color: var(--dusty-pink); margin-bottom: 10px;">Uncheck anything you don't want on your website:</p>
         <div class="checkbox-item">
           <input type="checkbox" id="tog-greeting">
           <label for="tog-greeting">Show Top Greeting Box</label>
@@ -813,27 +838,15 @@
         </div>
       </div>
 
-      <!-- Tab: Security & Password -->
-      <div id="set-security" class="setting-tab-content" style="display: none;">
-        <div class="form-group">
-          <label>New Admin Password:</label>
-          <input type="text" id="cfg-new-password" class="form-input" placeholder="Type new password">
-        </div>
-        <div style="margin-top: 14px;">
-          <button class="retro-btn" onclick="exportConfigData()">[ EXPORT BACKUP JSON ]</button>
-          <button class="retro-btn" style="color: #f87171;" onclick="resetToFactoryDefaults()">[ RESET TO DEFAULT ]</button>
-        </div>
-      </div>
-
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; border-top: 1px solid var(--border-purple); padding-top: 12px;">
         <button class="retro-btn" onclick="closeSettingsModal()">[ CANCEL ]</button>
-        <button class="retro-btn pink" onclick="saveSiteSettings()">[ SAVE ALL CHANGES ]</button>
+        <button class="retro-btn pink" onclick="saveSiteSettingsToCloud()">[ SAVE EVERYWHERE ]</button>
       </div>
     </div>
   </div>
 
   <!-- ==========================================================
-       MODAL: WRITE / EDIT POST
+       MODAL 3: WRITE / EDIT POST
        ========================================================== -->
   <div class="modal-backdrop" id="postModal">
     <div class="modal-window">
@@ -872,18 +885,48 @@
 
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
         <button class="retro-btn" onclick="closePostModal()">[ cancel ]</button>
-        <button class="retro-btn pink" onclick="savePostForm()">[ publish entry ]</button>
+        <button class="retro-btn pink" onclick="savePostToCloud()">[ publish to cloud ]</button>
       </div>
     </div>
   </div>
 
   <!-- ==========================================================
-       JAVASCRIPT: ENGINE & PERMANENT STORAGE
+       FIREBASE INTEGRATION SCRIPT
        ========================================================== -->
   <script>
-    // 1. Initial State Data
+    /* ==========================================================
+       1. YOUR FIREBASE CONFIGURATION
+       PASTE YOUR CONFIG KEYS FROM THE FIREBASE CONSOLE RIGHT HERE:
+       ========================================================== */
+   const firebaseConfig = {
+  apiKey: "AIzaSyBDoQxZfWm31DI1zmKNGtEUMRT9VBdbVtc",
+  authDomain: "kittylailacat.firebaseapp.com",
+  projectId: "kittylailacat",
+  storageBucket: "kittylailacat.firebasestorage.app",
+  messagingSenderId: "230809478219",
+  appId: "1:230809478219:web:6a7c4e53f0976ebad319ce",
+  measurementId: "G-GN550ZJFRP"
+};
+
+    // Initialize Firebase
+    let db = null;
+    let auth = null;
+    let isFirebaseReady = false;
+
+    try {
+      if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("PASTE_YOUR")) {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+        auth = firebase.auth();
+        isFirebaseReady = true;
+        console.log("Firebase connected successfully!");
+      }
+    } catch (e) {
+      console.warn("Firebase not configured yet, falling back to local memory:", e);
+    }
+
+    // Default Seed Data
     const INITIAL_DATA = {
-      adminPassword: 'meow2007',
       site: {
         title: 'kittylailacat',
         subtitle: 'welcome to lailaland ~ mrow',
@@ -944,42 +987,99 @@
       ]
     };
 
-    // Load or Initialize
-    let appData = (function() {
-      const stored = localStorage.getItem('kittylailacat_master_data');
-      if (stored) {
-        try { return JSON.parse(stored); } catch(e){}
-      }
-      return JSON.parse(JSON.stringify(INITIAL_DATA));
-    })();
+    let appData = JSON.parse(JSON.stringify(INITIAL_DATA));
+    let currentUser = null;
 
-    let isAdmin = sessionStorage.getItem('kittylailacat_auth') === 'true';
+    // Listen for Auth changes in Firebase
+    if (isFirebaseReady) {
+      auth.onAuthStateChanged(user => {
+        currentUser = user;
+        updateAdminBarUI();
+      });
 
-    function persistData() {
-      localStorage.setItem('kittylailacat_master_data', JSON.stringify(appData));
-      renderEntireSite();
+      // Realtime listener for Site Settings across all devices
+      db.collection('site_config').doc('main').onSnapshot(doc => {
+        if (doc.exists) {
+          const cloudData = doc.data();
+          if (cloudData.site) appData.site = cloudData.site;
+          if (cloudData.profile) appData.profile = cloudData.profile;
+          if (cloudData.survey) appData.survey = cloudData.survey;
+          if (cloudData.toggles) appData.toggles = cloudData.toggles;
+          if (cloudData.memories) appData.memories = cloudData.memories;
+          renderEntireSite();
+        } else {
+          // Initialize cloud on first run
+          db.collection('site_config').doc('main').set({
+            site: appData.site,
+            profile: appData.profile,
+            survey: appData.survey,
+            toggles: appData.toggles,
+            memories: appData.memories
+          });
+        }
+      });
+
+      // Realtime listener for Diary Posts across all devices
+      db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+        if (!snapshot.empty) {
+          appData.posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        } else {
+          appData.posts = INITIAL_DATA.posts;
+        }
+        renderPosts();
+      });
     }
 
-    // 2. Authentication
+    // 2. Authentication UI & Logic
     function handleAuthClick() {
-      if (isAdmin) {
+      if (currentUser) {
         openSettingsModal();
       } else {
-        const pass = prompt('Enter Admin Password: (default is meow2007)');
-        if (pass === appData.adminPassword) {
-          isAdmin = true;
-          sessionStorage.setItem('kittylailacat_auth', 'true');
-          renderEntireSite();
-          alert('Welcome back, Laila! Edit Mode is now unlocked. Use the pink toolbar at the top! ♥');
-        } else if (pass !== null) {
-          alert('Incorrect password! (Tip: default is meow2007)');
-        }
+        document.getElementById('loginModal').classList.add('open');
       }
     }
 
-    function logoutAdmin() {
-      isAdmin = false;
-      sessionStorage.removeItem('kittylailacat_auth');
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('open');
+    }
+
+    function submitFirebaseLogin() {
+      const email = document.getElementById('login-email').value.trim();
+      const pass = document.getElementById('login-pass').value.trim();
+
+      if (!isFirebaseReady) {
+        alert("Please paste your Firebase keys into index.html first! (See instructions above)");
+        return;
+      }
+
+      auth.signInWithEmailAndPassword(email, pass)
+        .then(() => {
+          closeLoginModal();
+          alert("Welcome back, Laila! Cloud sync is live. Any edits will save for everyone! ♥");
+        })
+        .catch(err => {
+          alert("Login error: " + err.message);
+        });
+    }
+
+    function logoutFirebase() {
+      if (isFirebaseReady) {
+        auth.signOut();
+      }
+      currentUser = null;
+      updateAdminBarUI();
+    }
+
+    function updateAdminBarUI() {
+      const adminBar = document.getElementById('admin-bar');
+      const loginBtn = document.getElementById('login-toggle-btn');
+      if (currentUser) {
+        adminBar.classList.add('active');
+        loginBtn.innerText = '[ ⚙ edit page ]';
+      } else {
+        adminBar.classList.remove('active');
+        loginBtn.innerText = '[ ✎ admin login ]';
+      }
       renderEntireSite();
     }
 
@@ -995,20 +1095,8 @@
       window.scrollTo({ top: 100, behavior: 'smooth' });
     }
 
-    // 4. Render Whole Site
+    // 4. Render Entire Site
     function renderEntireSite() {
-      // Admin Bar & Button
-      const adminBar = document.getElementById('admin-bar');
-      const loginBtn = document.getElementById('login-toggle-btn');
-      if (isAdmin) {
-        adminBar.classList.add('active');
-        loginBtn.innerText = '[ ⚙ edit page ]';
-      } else {
-        adminBar.classList.remove('active');
-        loginBtn.innerText = '[ ✎ admin ]';
-      }
-
-      // Title & Header
       document.getElementById('page-title').innerText = `${appData.site.title} :: ${appData.site.subtitle}`;
       document.getElementById('el-site-title').innerText = appData.site.title;
       document.getElementById('el-site-sub').innerText = appData.site.subtitle;
@@ -1021,7 +1109,6 @@
         dot.classList.remove('online');
       }
 
-      // Profile & Currently
       document.getElementById('el-profile-name').innerText = appData.profile.name;
       document.getElementById('el-display-name').innerText = appData.profile.displayName;
       document.getElementById('el-bio').innerText = `"${appData.profile.bio}"`;
@@ -1035,11 +1122,10 @@
       document.getElementById('el-favorite-things').innerText = appData.profile.favorites;
       document.getElementById('el-updates').innerText = appData.profile.updates;
 
-      // Greeting & Dear Internet Text
       document.getElementById('el-greeting-text').innerHTML = appData.site.greetingText.replace(/\n/g, '<br>');
       document.getElementById('el-dear-internet-text').innerText = appData.site.dearInternetText;
 
-      // Visibility Toggles
+      // Widget Toggles
       document.getElementById('widget-greeting').style.display = appData.toggles.showGreeting ? 'block' : 'none';
       document.getElementById('widget-dear-internet').style.display = appData.toggles.showDearInternet ? 'block' : 'none';
       document.getElementById('widget-badges').style.display = appData.toggles.showBadges ? 'block' : 'none';
@@ -1057,35 +1143,34 @@
         </tr>
       `).join('');
 
-      // Memories Grid
+      // Memories Scrapbook
       const memGrid = document.getElementById('memories-grid');
       memGrid.innerHTML = appData.memories.map((m, idx) => `
         <div class="polaroid-frame" style="width: 100%;">
           <div class="washi-tape-top"></div>
           <img src="${m.img}" alt="memory" onerror="this.src='https://picsum.photos/seed/${idx}/300/300'">
           <div class="polaroid-caption">${escapeHtml(m.caption)}</div>
-          ${isAdmin ? `<button onclick="deleteMemoryPhoto(${idx})" style="background:red; color:#fff; border:none; font-size:9px; cursor:pointer; margin-top:4px;">delete</button>` : ''}
+          ${currentUser ? `<button onclick="deleteMemoryPhoto(${idx})" style="background:red; color:#fff; border:none; font-size:9px; cursor:pointer; margin-top:4px;">delete</button>` : ''}
         </div>
       `).join('');
 
-      // Posts
       renderPosts();
     }
 
-    // Render Diary Posts
+    // Render Posts
     function renderPosts() {
       const container = document.getElementById('posts-container');
       const archiveContainer = document.getElementById('archive-posts-list');
       container.innerHTML = '';
       archiveContainer.innerHTML = '';
 
-      appData.posts.forEach((post, index) => {
+      appData.posts.forEach((post) => {
         const postCard = document.createElement('article');
         postCard.className = 'retro-box';
         postCard.innerHTML = `
           <div class="retro-box-header">
             <span>post :: ${escapeHtml(post.title)}</span>
-            ${isAdmin ? `
+            ${currentUser ? `
               <div>
                 <button class="retro-btn" style="padding: 1px 6px; font-size: 10px;" onclick="editPost('${post.id}')">edit</button>
                 <button class="retro-btn" style="padding: 1px 6px; font-size: 10px; color: #f87171;" onclick="deletePost('${post.id}')">delete</button>
@@ -1130,11 +1215,8 @@
       document.getElementById('stat-photos').innerText = appData.memories.length;
     }
 
-    // 5. Settings Modal Controls
+    // 5. Cloud Save Settings
     function openSettingsModal() {
-      if (!isAdmin) { handleAuthClick(); return; }
-
-      // Fill in current values
       document.getElementById('cfg-title').value = appData.site.title;
       document.getElementById('cfg-subtitle').value = appData.site.subtitle;
       document.getElementById('cfg-status-text').value = appData.site.statusText;
@@ -1151,7 +1233,6 @@
       document.getElementById('cfg-favorites').value = appData.profile.favorites;
       document.getElementById('cfg-updates').value = appData.profile.updates;
 
-      // Fill Toggles
       document.getElementById('tog-greeting').checked = appData.toggles.showGreeting;
       document.getElementById('tog-dear-internet').checked = appData.toggles.showDearInternet;
       document.getElementById('tog-badges').checked = appData.toggles.showBadges;
@@ -1160,7 +1241,6 @@
       document.getElementById('tog-stats').checked = appData.toggles.showStats;
       document.getElementById('tog-guestbook').checked = appData.toggles.showGuestbook;
 
-      // Survey Fields
       const grid = document.getElementById('survey-inputs-grid');
       grid.innerHTML = appData.survey.map((s, i) => `
         <div class="form-group">
@@ -1183,7 +1263,7 @@
       event.target.classList.add('active');
     }
 
-    function saveSiteSettings() {
+    function saveSiteSettingsToCloud() {
       appData.site.title = document.getElementById('cfg-title').value.trim();
       appData.site.subtitle = document.getElementById('cfg-subtitle').value.trim();
       appData.site.statusText = document.getElementById('cfg-status-text').value.trim();
@@ -1201,7 +1281,6 @@
       appData.profile.favorites = document.getElementById('cfg-favorites').value.trim();
       appData.profile.updates = document.getElementById('cfg-updates').value.trim();
 
-      // Save Toggles
       appData.toggles.showGreeting = document.getElementById('tog-greeting').checked;
       appData.toggles.showDearInternet = document.getElementById('tog-dear-internet').checked;
       appData.toggles.showBadges = document.getElementById('tog-badges').checked;
@@ -1210,25 +1289,31 @@
       appData.toggles.showStats = document.getElementById('tog-stats').checked;
       appData.toggles.showGuestbook = document.getElementById('tog-guestbook').checked;
 
-      // Save Survey Inputs
       appData.survey.forEach((s, i) => {
         const inp = document.getElementById('survey-input-' + i);
         if (inp) s.val = inp.value.trim() || 'n/a';
       });
 
-      // Save Password if entered
-      const newPass = document.getElementById('cfg-new-password').value.trim();
-      if (newPass) {
-        appData.adminPassword = newPass;
-        alert('Password updated!');
+      if (isFirebaseReady) {
+        db.collection('site_config').doc('main').set({
+          site: appData.site,
+          profile: appData.profile,
+          survey: appData.survey,
+          toggles: appData.toggles,
+          memories: appData.memories
+        }).then(() => {
+          closeSettingsModal();
+          alert("All changes saved to the cloud! Every visitor on every device will see this now! ♥");
+        }).catch(err => {
+          alert("Error saving to Firebase: " + err.message);
+        });
+      } else {
+        closeSettingsModal();
+        renderEntireSite();
       }
-
-      persistData();
-      closeSettingsModal();
-      alert('All changes saved! ♥');
     }
 
-    // 6. Post Create & Edit
+    // 6. Post Create & Edit (Cloud Firestore)
     function openPostModal() {
       document.getElementById('post-modal-heading').innerText = '✎ WRITE NEW DIARY ENTRY';
       document.getElementById('editing-post-id').value = '';
@@ -1257,7 +1342,7 @@
       document.getElementById('postModal').classList.remove('open');
     }
 
-    function savePostForm() {
+    function savePostToCloud() {
       const id = document.getElementById('editing-post-id').value;
       const title = document.getElementById('post-title-input').value.trim();
       const body = document.getElementById('post-body-input').value.trim();
@@ -1266,53 +1351,65 @@
       const img = document.getElementById('post-img-input').value.trim();
 
       if (!title || !body) {
-        alert('Please fill in both a title and diary content!');
+        alert('Please fill in both a title and diary text!');
         return;
       }
 
-      if (id) {
-        // Update existing
-        const idx = appData.posts.findIndex(x => x.id === id);
-        if (idx !== -1) {
-          appData.posts[idx] = { id, title, body, date, mood, image: img };
+      const postData = {
+        title, body, date, mood,
+        image: img,
+        timestamp: Date.now()
+      };
+
+      if (isFirebaseReady) {
+        if (id) {
+          db.collection('posts').doc(id).update(postData).then(() => {
+            closePostModal();
+          });
+        } else {
+          db.collection('posts').add(postData).then(() => {
+            closePostModal();
+            switchTab('home');
+          });
         }
       } else {
-        // Add new
-        appData.posts.unshift({
-          id: 'post-' + Date.now(),
-          title, body, date, mood, image: img
-        });
+        alert("Please connect Firebase first to save everywhere!");
       }
-
-      persistData();
-      closePostModal();
-      switchTab('home');
     }
 
     function deletePost(id) {
-      if (confirm('Delete this diary post forever?')) {
-        appData.posts = appData.posts.filter(x => x.id !== id);
-        persistData();
+      if (confirm('Delete this diary post forever from the cloud?')) {
+        if (isFirebaseReady) {
+          db.collection('posts').doc(id).delete();
+        }
       }
     }
 
-    // 7. Scrapbook Add Photo
+    // 7. Scrapbook Photo Addition
     function addScrapbookPhotoPrompt() {
+      if (!currentUser) {
+        alert("Please log in as Admin to pin photos!");
+        return;
+      }
       const url = prompt('Enter Image Path or Web URL (e.g. images/photo1.jpg):', 'images/photo1.jpg');
       if (!url) return;
       const cap = prompt('Enter Photo Caption (e.g. 10/10/26 • late night):', '10/10/26 • cute');
+      
       appData.memories.push({ img: url, caption: cap || '10/10/26' });
-      persistData();
+      if (isFirebaseReady) {
+        db.collection('site_config').doc('main').update({ memories: appData.memories });
+      }
     }
 
     function deleteMemoryPhoto(idx) {
       if (confirm('Remove this photo from your scrapbook?')) {
         appData.memories.splice(idx, 1);
-        persistData();
+        if (isFirebaseReady) {
+          db.collection('site_config').doc('main').update({ memories: appData.memories });
+        }
       }
     }
 
-    // 8. Guestbook
     function signGuestbook() {
       const name = document.getElementById('gb-name').value.trim() || 'visitor';
       const msg = document.getElementById('gb-msg').value.trim();
@@ -1330,29 +1427,11 @@
       alert('Thank you for signing laila\'s guestbook! ♥');
     }
 
-    // 9. Backup & Factory Reset
-    function exportConfigData() {
-      const json = JSON.stringify(appData, null, 2);
-      navigator.clipboard.writeText(json);
-      alert('Your complete site configuration has been copied to your clipboard! Paste and save it into a text file for backup. ♥');
-    }
-
-    function resetToFactoryDefaults() {
-      if (confirm('Reset EVERYTHING back to original defaults? This will erase custom posts and settings.')) {
-        localStorage.removeItem('kittylailacat_master_data');
-        appData = JSON.parse(JSON.stringify(INITIAL_DATA));
-        persistData();
-        closeSettingsModal();
-        alert('Reset complete!');
-      }
-    }
-
     function escapeHtml(str) {
       if (!str) return '';
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
     }
 
-    // Initial load
     document.addEventListener('DOMContentLoaded', () => {
       renderEntireSite();
     });
