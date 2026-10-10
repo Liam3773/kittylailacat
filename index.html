@@ -469,7 +469,7 @@
       </div>
       <div class="status-badge" onclick="toggleOnlineStatus()">
         <span class="status-dot" id="el-status-dot"></span>
-        <span id="el-status-text" class="editable-any">currently offline</span>
+        <span id="el-status-text" class="editable-any">currently online</span>
       </div>
     </header>
 
@@ -843,7 +843,7 @@
       site: {
         title: 'kittylailacat',
         subtitle: 'welcome to lailaland ~ mrow',
-        statusText: 'currently offline',
+        statusText: 'currently online',
         isOnline: false,
         greetingHeader: 'greeting:',
         greetingText: '<strong style="color: var(--accent-pink);">hello visitor &lt;3</strong><br>welcome to my little private corner of cyberspace. this is my personal sanctuary for late night thoughts, photos, and dreams.',
@@ -1327,7 +1327,7 @@
     function toggleOnlineStatus() {
       if (!currentUser) return;
       appData.site.isOnline = !appData.site.isOnline;
-      appData.site.statusText = appData.site.isOnline ? "currently online" : "currently offline";
+      appData.site.statusText = appData.site.isOnline ? "currently online" : "currently online";
       saveAllInlineEditsToCloud();
     }
 
