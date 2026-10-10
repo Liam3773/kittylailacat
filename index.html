@@ -31,7 +31,6 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* 2006 Gingham Wallpaper */
     body {
       background-color: #f7d6e6;
       background-image: 
@@ -59,7 +58,6 @@
       position: relative;
     }
 
-    /* Fixed Admin Toolbar */
     #admin-bar {
       display: none;
       background: #2a0b1d;
@@ -77,7 +75,6 @@
     }
     #admin-bar.active { display: flex; }
 
-    /* Editable On-Page Highlights */
     body.is-admin [contenteditable="true"] {
       outline: 1px dashed var(--accent-pink) !important;
       outline-offset: 3px;
@@ -89,18 +86,14 @@
       background: rgba(255, 114, 189, 0.18) !important;
     }
 
-    /* Tap-to-Swap Image Indicators */
     body.is-admin .admin-swappable-img {
       cursor: pointer;
-      position: relative;
-      transition: filter 0.15s, box-shadow 0.15s;
     }
     body.is-admin .admin-swappable-img:hover {
       filter: brightness(1.15) contrast(1.1);
       box-shadow: 0 0 10px var(--accent-pink);
     }
 
-    /* Top Banner */
     .top-banner {
       background: var(--panel-dark);
       border: 2px solid var(--border-purple);
@@ -138,7 +131,6 @@
       font-family: 'VT323', monospace;
       font-size: 16px;
       color: var(--text-muted);
-      cursor: default;
     }
     body.is-admin .status-badge { cursor: pointer; }
     .status-dot {
@@ -152,7 +144,6 @@
       box-shadow: 0 0 8px #22c55e;
     }
 
-    /* Navigation */
     .nav-bar {
       background: var(--panel-dark);
       border: 2px solid var(--border-purple);
@@ -203,7 +194,6 @@
     }
     .retro-btn.pink:hover { background: var(--accent-pink); color: #000; }
 
-    /* Layout */
     .content-grid {
       display: grid;
       grid-template-columns: 66% 34%;
@@ -233,7 +223,6 @@
     }
     .retro-box-body { padding: 14px; }
 
-    /* Polaroids */
     .polaroid-frame {
       background: #fbf7ee;
       padding: 8px 8px 18px 8px;
@@ -295,7 +284,6 @@
     }
     body.is-admin .polaroid-delete-btn { display: flex; }
 
-    /* Heart Avatar */
     .heart-avatar-wrapper {
       width: 160px;
       height: 150px;
@@ -308,7 +296,6 @@
       filter: drop-shadow(0 0 6px rgba(255, 114, 189, 0.4));
     }
 
-    /* Lists & Tables */
     .currently-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
     .currently-list li {
       font-size: 13px;
@@ -377,7 +364,6 @@
     body.is-admin .add-polaroid-card { display: flex; }
     .add-polaroid-card:hover { background: rgba(255, 114, 189, 0.15); }
 
-    /* Clean In-Page Retro Modals */
     .modal-backdrop {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -431,7 +417,6 @@
     }
     .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--accent-pink); }
 
-    /* Custom Retro Toast Notification */
     #retro-toast {
       position: fixed;
       bottom: 20px;
@@ -462,12 +447,11 @@
 </head>
 <body>
 
-  <!-- Floating Toast Notification (Replaces ugly alert dialogs) -->
   <div id="retro-toast">Notification Message</div>
 
   <div class="site-wrapper">
 
-    <!-- FLOATING ADMIN ACTION BAR -->
+    <!-- ADMIN ACTION BAR -->
     <div id="admin-bar">
       <div>✦ ADMIN MODE &bull; Click ANY text to edit &bull; Tap photos to swap from Camera Roll!</div>
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -546,7 +530,7 @@
             </div>
           </div>
 
-          <!-- Diary Posts Stream -->
+          <!-- Latest Entries on Home -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <div style="font-family: 'Silkscreen', monospace; font-size: 13px; color: var(--pale-lavender);">latest entries:</div>
             <button class="retro-btn pink" onclick="openPostModal()">[ + write new entry ]</button>
@@ -555,15 +539,19 @@
 
         </section>
 
-        <!-- ================= DIARY ARCHIVE TAB ================= -->
+        <!-- ================= DIARY TAB (NOW SHOWS COMPLETE POSTS + PHOTOS) ================= -->
         <section id="view-diary" class="view-panel">
           <div class="retro-box">
             <div class="retro-box-header">
-              <span>diary archive // all entries</span>
-              <button class="retro-btn pink" style="padding: 2px 8px;" onclick="openPostModal()">+ new entry</button>
+              <span>diary entries // full journal</span>
+              <button class="retro-btn pink" style="padding: 2px 8px;" onclick="openPostModal()">+ write entry</button>
             </div>
             <div class="retro-box-body">
-              <div id="archive-posts-list"></div>
+              <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
+                my thoughts, unfiltered entries, and late night polaroids.
+              </p>
+              <!-- Full post stream in diary tab with all pictures -->
+              <div id="diary-posts-container"></div>
             </div>
           </div>
         </section>
@@ -579,10 +567,7 @@
               <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;" id="el-memories-desc" class="editable-any">
                 polaroids, low-res flash photos, and moments saved in time.
               </p>
-              
-              <div class="memories-grid" id="memories-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px;">
-                <!-- Polaroids & Add Button injected here -->
-              </div>
+              <div class="memories-grid" id="memories-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px;"></div>
             </div>
           </div>
         </section>
@@ -708,9 +693,7 @@
 
   </div>
 
-  <!-- ==========================================================
-       MODAL 1: CLEAN ADMIN LOGIN MODAL
-       ========================================================== -->
+  <!-- MODAL 1: ADMIN LOGIN -->
   <div class="modal-backdrop" id="loginModal">
     <div class="modal-window">
       <div class="modal-title">
@@ -732,9 +715,7 @@
     </div>
   </div>
 
-  <!-- ==========================================================
-       MODAL 2: WRITE / EDIT DIARY POST
-       ========================================================== -->
+  <!-- MODAL 2: WRITE / EDIT DIARY POST -->
   <div class="modal-backdrop" id="postModal">
     <div class="modal-window">
       <div class="modal-title">
@@ -760,7 +741,6 @@
         </div>
       </div>
 
-      <!-- Native iPhone / File Picker Upload -->
       <div class="form-group">
         <label>Upload Photo (From Camera Roll / Computer):</label>
         <input type="file" id="post-file-input" class="form-input" accept="image/*" style="padding: 4px;" onchange="handleImageFileSelect(event, 'post-img-preview', 'post-img-base64')">
@@ -779,14 +759,12 @@
 
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
         <button class="retro-btn" onclick="closeModal('postModal')">[ cancel ]</button>
-        <button class="retro-btn pink" onclick="savePostToCloud()">[ publish to cloud ]</button>
+        <button class="retro-btn pink" id="post-save-btn" onclick="savePostToCloud()">[ publish to cloud ]</button>
       </div>
     </div>
   </div>
 
-  <!-- ==========================================================
-       MODAL 3: POLAROID ADD / SWAP MODAL
-       ========================================================== -->
+  <!-- MODAL 3: POLAROID ADD / SWAP -->
   <div class="modal-backdrop" id="polaroidModal">
     <div class="modal-window">
       <div class="modal-title">
@@ -819,9 +797,7 @@
     </div>
   </div>
 
-  <!-- ==========================================================
-       MODAL 4: RETRO CONFIRMATION DIALOG (No browser popup!)
-       ========================================================== -->
+  <!-- MODAL 4: RETRO CONFIRMATION -->
   <div class="modal-backdrop" id="confirmModal">
     <div class="modal-window" style="max-width: 380px; text-align: center;">
       <div class="modal-title">
@@ -837,7 +813,6 @@
 
   <!-- JAVASCRIPT ENGINE -->
   <script>
-    /* 1. FIREBASE INITIALIZATION */
     const firebaseConfig = {
       apiKey: "AIzaSyBDoQxZfWm31DI1zmKNGtEUMRT9VBdbVtc",
       authDomain: "kittylailacat.firebaseapp.com",
@@ -858,10 +833,9 @@
       auth = firebase.auth();
       isFirebaseReady = true;
     } catch (e) {
-      console.warn("Firebase initialization notice:", e);
+      console.warn("Firebase notice:", e);
     }
 
-    // Default Site Content
     const INITIAL_DATA = {
       site: {
         title: 'kittylailacat',
@@ -903,12 +877,6 @@
         updates: 'no',
         catArt: '  /\\_/\\  \n ( o.o ) \n  > ^ <  mrow!'
       },
-      badges: [
-        { id: 'b1', text: '♥ LIAM ♥', isPink: true },
-        { id: 'b2', text: 'ᓚᘏᗢ NETTSPEND', isPink: false },
-        { id: 'b3', text: 'BEST VIEWED 1024x768', isPink: true },
-        { id: 'b4', text: 'TIRED 24/7', isPink: false }
-      ],
       survey: [
         { label: 'intro:', val: 'n/a' },
         { label: 'favourite music:', val: 'nettspend' },
@@ -931,29 +899,28 @@
         {
           id: 'post-1',
           title: 'love letter to husbandy',
-          date: '10/10/26',
-          mood: 'birthday sex',
+          date: '22/8/26',
+          mood: '2slimey (cypher verse)',
           body: 'hello world',
-          image: 'images/photo1.jpg'
+          image: 'images/photo1.jpg',
+          timestamp: Date.now()
         }
       ]
     };
 
     let appData = (function() {
-      const stored = localStorage.getItem('kittylailacat_data_v2');
+      const stored = localStorage.getItem('kittylailacat_data_v3');
       return stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(INITIAL_DATA));
     })();
 
     let currentUser = null;
 
-    // Firebase Auth State
     if (isFirebaseReady) {
       auth.onAuthStateChanged(user => {
         currentUser = user;
         updateAdminModeUI();
       });
 
-      // Realtime listener for Site Content
       db.collection('site_config').doc('main').onSnapshot(doc => {
         if (doc.exists) {
           const cloud = doc.data();
@@ -961,37 +928,34 @@
           if (cloud.profile) appData.profile = Object.assign(appData.profile, cloud.profile);
           if (cloud.survey) appData.survey = cloud.survey;
           if (cloud.memories) appData.memories = cloud.memories;
-          if (cloud.badges) appData.badges = cloud.badges;
           renderSite();
         } else {
           db.collection('site_config').doc('main').set({
             site: appData.site,
             profile: appData.profile,
             survey: appData.survey,
-            memories: appData.memories,
-            badges: appData.badges
+            memories: appData.memories
           });
         }
       });
 
-      // Realtime listener for Posts
       db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snap => {
         if (!snap.empty) {
           appData.posts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         }
         renderPosts();
+      }, err => {
+        console.warn("Posts sync notice:", err);
       });
     }
 
-    /* 2. CUSTOM RETRO TOAST (replaces alert) */
     function showToast(msg) {
       const t = document.getElementById('retro-toast');
       t.innerText = msg;
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3500);
+      setTimeout(() => t.classList.remove('show'), 3800);
     }
 
-    /* 3. RETRO CONFIRMATION (replaces confirm) */
     function showRetroConfirm(msg, onConfirm) {
       document.getElementById('confirm-modal-text').innerText = msg;
       const okBtn = document.getElementById('confirm-modal-ok-btn');
@@ -1002,11 +966,10 @@
       openModal('confirmModal');
     }
 
-    /* 4. MODAL UTILITIES */
     function openModal(id) { document.getElementById(id).classList.add('open'); }
     function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-    /* 5. IMAGE COMPRESSION (FOR IPHONE CAMERA ROLL & FAST FIRESTORE SYNC) */
+    // Mobile Camera Roll optimization (<120KB for fast Firestore saving)
     function handleImageFileSelect(event, previewImgId, base64InputId) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1015,11 +978,10 @@
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          // Resize image on mobile canvas to prevent exceeding limits
           const canvas = document.createElement('canvas');
           let width = img.width;
           let height = img.height;
-          const maxDim = 900;
+          const maxDim = 640;
 
           if (width > maxDim || height > maxDim) {
             if (width > height) {
@@ -1036,8 +998,7 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          // Compress to lightweight JPEG
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
           document.getElementById(base64InputId).value = dataUrl;
           const previewEl = document.getElementById(previewImgId);
           previewEl.src = dataUrl;
@@ -1055,7 +1016,6 @@
       document.getElementById('post-img-preview-box').style.display = 'none';
     }
 
-    /* 6. ADMIN TOGGLE & DIRECT EDITING ACTIVATION */
     function handleAuthClick() {
       if (currentUser) {
         saveAllInlineEditsToCloud();
@@ -1069,7 +1029,7 @@
       const pass = document.getElementById('login-pass').value.trim();
 
       if (!isFirebaseReady) {
-        showToast("Firebase not initialized! Using local admin mode.");
+        showToast("Connected locally! (Add Firebase keys for cloud)");
         currentUser = { email: "local" };
         updateAdminModeUI();
         closeModal('loginModal');
@@ -1079,7 +1039,7 @@
       auth.signInWithEmailAndPassword(email, pass)
         .then(() => {
           closeModal('loginModal');
-          showToast("Welcome Laila! Admin mode unlocked. Click any text to edit! ♥");
+          showToast("Admin mode active! Click any text to edit! ♥");
         })
         .catch(err => showToast("Login failed: " + err.message));
     }
@@ -1106,7 +1066,6 @@
         loginBtn.innerText = '[ ✎ admin login ]';
       }
 
-      // Make ALL marked text elements directly editable on the webpage
       document.querySelectorAll('.editable-any').forEach(el => {
         el.contentEditable = isAdmin ? "true" : "false";
       });
@@ -1114,7 +1073,6 @@
       renderSite();
     }
 
-    /* 7. TAB ROUTING */
     function switchTab(tabName) {
       document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
@@ -1126,7 +1084,6 @@
       window.scrollTo({ top: 90, behavior: 'smooth' });
     }
 
-    /* 8. RENDER ALL PAGE CONTENT */
     function renderSite() {
       const s = appData.site;
       const p = appData.profile;
@@ -1181,7 +1138,6 @@
       document.getElementById('el-about-header').innerText = s.aboutHeader || 'about me // survey';
       document.getElementById('el-footer-1').innerHTML = s.footer1 || 'kittylailacat &copy; 2006-2026';
 
-      // Render Survey
       const surveyTbl = document.getElementById('survey-table-body');
       surveyTbl.innerHTML = appData.survey.map((item, idx) => `
         <tr>
@@ -1190,7 +1146,6 @@
         </tr>
       `).join('');
 
-      // Re-apply contenteditable if in admin mode
       if (currentUser) {
         document.querySelectorAll('.editable-any').forEach(el => el.contentEditable = "true");
       }
@@ -1199,7 +1154,6 @@
       renderPosts();
     }
 
-    /* 9. RENDER MEMORIES / POLAROIDS */
     function renderMemories() {
       const grid = document.getElementById('memories-grid');
       const isAdmin = currentUser !== null;
@@ -1217,7 +1171,6 @@
         grid.appendChild(card);
       });
 
-      // + ADD POLAROID CARD
       const addCard = document.createElement('div');
       addCard.className = 'add-polaroid-card';
       addCard.innerHTML = `
@@ -1232,18 +1185,10 @@
       }
     }
 
-    /* 10. RENDER POSTS & PREVIOUS ENTRIES */
-    function renderPosts() {
-      const container = document.getElementById('posts-container');
-      const archiveContainer = document.getElementById('archive-posts-list');
-      container.innerHTML = '';
-      archiveContainer.innerHTML = '';
-
-      appData.posts.forEach((post) => {
-        // Feed Card
-        const postCard = document.createElement('article');
-        postCard.className = 'retro-box';
-        postCard.innerHTML = `
+    // Helper to generate the exact polaroid post HTML
+    function createPostCardHTML(post) {
+      return `
+        <article class="retro-box">
           <div class="retro-box-header">
             <span>post :: ${escapeHtml(post.title)}</span>
             ${currentUser ? `
@@ -1274,28 +1219,31 @@
               ` : ''}
             </div>
           </div>
-        `;
-        container.appendChild(postCard);
+        </article>
+      `;
+    }
 
-        // Archive List Item
-        const arcItem = document.createElement('div');
-        arcItem.style.cssText = "padding: 10px 0; border-bottom: 1px dashed var(--border-purple); display: flex; justify-content: space-between; align-items: center;";
-        arcItem.innerHTML = `
-          <div>
-            <span style="color: var(--accent-pink); font-family: 'VT323', monospace; font-size: 18px;">[${escapeHtml(post.date)}]</span>
-            <strong style="color: var(--pale-lavender); margin-left: 8px;">${escapeHtml(post.title)}</strong>
-          </div>
-          ${currentUser ? `
-            <div>
-              <button class="retro-btn" style="padding: 1px 6px; font-size: 10px;" onclick="openEditPostModal('${post.id}')">edit</button>
-            </div>
-          ` : ''}
-        `;
-        archiveContainer.appendChild(arcItem);
+    function renderPosts() {
+      const homeContainer = document.getElementById('posts-container');
+      const diaryContainer = document.getElementById('diary-posts-container');
+      
+      if (homeContainer) homeContainer.innerHTML = '';
+      if (diaryContainer) diaryContainer.innerHTML = '';
+
+      if (appData.posts.length === 0) {
+        const emptyMsg = `<p style="color:var(--text-muted); padding:12px;">nothing here yet... write your first entry! ~</p>`;
+        if (homeContainer) homeContainer.innerHTML = emptyMsg;
+        if (diaryContainer) diaryContainer.innerHTML = emptyMsg;
+        return;
+      }
+
+      appData.posts.forEach((post) => {
+        const postHTML = createPostCardHTML(post);
+        if (homeContainer) homeContainer.innerHTML += postHTML;
+        if (diaryContainer) diaryContainer.innerHTML += postHTML;
       });
     }
 
-    /* 11. SWAPPING & ADDING PHOTOS (IPHONE / FILE PICKER MODAL) */
     function triggerPhotoSwap(type, extraId = null) {
       if (!currentUser) return;
 
@@ -1331,7 +1279,7 @@
       const caption = document.getElementById('pol-caption-input').value.trim();
 
       if (!imgBase64) {
-        showToast("Please choose a photo from your files/camera roll first!");
+        showToast("Please choose a photo from camera roll / files!");
         return;
       }
 
@@ -1347,14 +1295,16 @@
           caption: caption || '10/10/26'
         });
       } else if (type === 'post_img') {
+        const pIdx = appData.posts.findIndex(p => p.id === idx);
+        if (pIdx !== -1) appData.posts[pIdx].image = imgBase64;
         if (isFirebaseReady) {
-          db.collection('posts').doc(idx).update({ image: imgBase64 });
+          db.collection('posts').doc(idx).set({ image: imgBase64 }, { merge: true });
         }
       }
 
       closeModal('polaroidModal');
       saveAllInlineEditsToCloud();
-      showToast("Photo updated successfully! ♥");
+      showToast("Photo updated! ♥");
     }
 
     function deleteMemoryPhoto(idx) {
@@ -1372,7 +1322,6 @@
       saveAllInlineEditsToCloud();
     }
 
-    /* 12. SAVE ALL ON-PAGE EDITS TO FIREBASE (ANY TEXT ELEMENT) */
     function saveAllInlineEditsToCloud() {
       if (!currentUser) return;
 
@@ -1414,13 +1363,11 @@
       p.updates = document.getElementById('el-updates').innerText.trim();
       p.catArt = document.getElementById('el-cat-art').innerText;
 
-      // Extract polaroid captions
       appData.memories.forEach((m, idx) => {
         const cap = document.getElementById('pol-cap-' + idx);
         if (cap) m.caption = cap.innerText.trim();
       });
 
-      // Extract survey rows
       appData.survey.forEach((item, idx) => {
         const lbl = document.getElementById('survey-lbl-' + idx);
         const val = document.getElementById('survey-val-' + idx);
@@ -1428,33 +1375,31 @@
         if (val) item.val = val.innerText.trim();
       });
 
-      // Save to localStorage backup
-      localStorage.setItem('kittylailacat_data_v2', JSON.stringify(appData));
+      localStorage.setItem('kittylailacat_data_v3', JSON.stringify(appData));
 
-      // Push to Firestore Cloud
       if (isFirebaseReady) {
         db.collection('site_config').doc('main').set({
           site: appData.site,
           profile: appData.profile,
           survey: appData.survey,
-          memories: appData.memories,
-          badges: appData.badges
+          memories: appData.memories
         }).then(() => {
-          showToast("Changes permanently saved to the cloud everywhere! ♥");
+          showToast("Changes saved to the cloud everywhere! ♥");
           renderSite();
-        }).catch(err => showToast("Firebase save error: " + err.message));
+        }).catch(err => {
+          showToast("Save error: " + err.message);
+        });
       } else {
-        showToast("Saved to local storage!");
+        showToast("Saved locally!");
         renderSite();
       }
     }
 
-    /* 13. POST CREATION & EDITING */
     function openPostModal() {
       document.getElementById('post-modal-heading').innerText = '✎ WRITE DIARY ENTRY';
       document.getElementById('editing-post-id').value = '';
       document.getElementById('post-title-input').value = '';
-      document.getElementById('post-date-input').value = new Date().toLocaleDateString('en-GB');
+      document.getElementById('post-date-input').value = '10/10/26';
       document.getElementById('post-mood-input').value = '';
       document.getElementById('post-body-input').value = '';
       clearPostPreview();
@@ -1483,6 +1428,7 @@
       openModal('postModal');
     }
 
+    // Resilient save logic using .set() with merge
     function savePostToCloud() {
       const id = document.getElementById('editing-post-id').value;
       const title = document.getElementById('post-title-input').value.trim();
@@ -1490,11 +1436,15 @@
       const date = document.getElementById('post-date-input').value.trim() || '10/10/26';
       const mood = document.getElementById('post-mood-input').value.trim();
       const img = document.getElementById('post-img-base64').value;
+      const saveBtn = document.getElementById('post-save-btn');
 
       if (!title || !body) {
-        showToast("Please include both a title and body text!");
+        showToast("Please provide both a title and body text!");
         return;
       }
+
+      saveBtn.innerText = "[ saving... ]";
+      saveBtn.disabled = true;
 
       const postData = {
         title, body, date, mood,
@@ -1503,40 +1453,51 @@
       };
 
       if (isFirebaseReady) {
-        if (id) {
-          db.collection('posts').doc(id).update(postData).then(() => {
+        const targetDoc = id ? db.collection('posts').doc(id) : db.collection('posts').doc();
+        targetDoc.set(postData, { merge: true })
+          .then(() => {
+            saveBtn.innerText = "[ publish to cloud ]";
+            saveBtn.disabled = false;
             closeModal('postModal');
-            showToast("Diary entry updated! ♥");
-          });
-        } else {
-          db.collection('posts').add(postData).then(() => {
+            showToast("Post published to the cloud! ♥");
+          })
+          .catch(err => {
+            saveBtn.innerText = "[ publish to cloud ]";
+            saveBtn.disabled = false;
+            showToast("Cloud error: " + err.message);
+            
+            // Fallback to local storage so nothing is ever lost
+            postData.id = id || ('post-' + Date.now());
+            const idx = appData.posts.findIndex(p => p.id === postData.id);
+            if (idx !== -1) appData.posts[idx] = postData;
+            else appData.posts.unshift(postData);
+            localStorage.setItem('kittylailacat_data_v3', JSON.stringify(appData));
             closeModal('postModal');
-            switchTab('home');
-            showToast("Diary entry published! ♥");
+            renderPosts();
           });
-        }
       } else {
-        if (id) {
-          const idx = appData.posts.findIndex(p => p.id === id);
-          if (idx !== -1) appData.posts[idx] = Object.assign(postData, { id });
-        } else {
-          postData.id = 'post-' + Date.now();
-          appData.posts.unshift(postData);
-        }
-        localStorage.setItem('kittylailacat_data_v2', JSON.stringify(appData));
+        saveBtn.innerText = "[ publish to cloud ]";
+        saveBtn.disabled = false;
+        postData.id = id || ('post-' + Date.now());
+        const idx = appData.posts.findIndex(p => p.id === postData.id);
+        if (idx !== -1) appData.posts[idx] = postData;
+        else appData.posts.unshift(postData);
+        localStorage.setItem('kittylailacat_data_v3', JSON.stringify(appData));
         closeModal('postModal');
         renderPosts();
-        showToast("Entry saved!");
+        showToast("Saved locally!");
       }
     }
 
     function deletePost(postId) {
-      showRetroConfirm("Delete this diary post forever from the cloud?", () => {
+      showRetroConfirm("Delete this diary post forever?", () => {
         if (isFirebaseReady) {
-          db.collection('posts').doc(postId).delete().then(() => showToast("Post deleted."));
+          db.collection('posts').doc(postId).delete()
+            .then(() => showToast("Post deleted from cloud."))
+            .catch(err => showToast("Delete failed: " + err.message));
         } else {
           appData.posts = appData.posts.filter(p => p.id !== postId);
-          localStorage.setItem('kittylailacat_data_v2', JSON.stringify(appData));
+          localStorage.setItem('kittylailacat_data_v3', JSON.stringify(appData));
           renderPosts();
           showToast("Post deleted.");
         }
