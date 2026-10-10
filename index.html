@@ -539,18 +539,15 @@
 
         </section>
 
-        <!-- ================= DIARY TAB (NOW SHOWS COMPLETE POSTS + PHOTOS) ================= -->
+        <!-- ================= DIARY TAB ================= -->
         <section id="view-diary" class="view-panel">
           <div class="retro-box">
             <div class="retro-box-header">
-              <span>diary entries // full journal</span>
+              <span id="el-diary-header" class="editable-any">diary entries // full journal</span>
               <button class="retro-btn pink" style="padding: 2px 8px;" onclick="openPostModal()">+ write entry</button>
             </div>
             <div class="retro-box-body">
-              <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
-                my thoughts, unfiltered entries, and late night polaroids.
-              </p>
-              <!-- Full post stream in diary tab with all pictures -->
+              <!-- Full post stream in diary tab with all pictures (clean without flavor text) -->
               <div id="diary-posts-container"></div>
             </div>
           </div>
@@ -752,6 +749,12 @@
         </div>
       </div>
 
+      <!-- Explicit Optional Photo Caption (Not assumed!) -->
+      <div class="form-group">
+        <label>Photo Caption (Optional - leave blank for none):</label>
+        <input type="text" id="post-caption-input" class="form-input" placeholder="leave blank for no caption under photo">
+      </div>
+
       <div class="form-group">
         <label>Body Text:</label>
         <textarea id="post-body-input" class="form-textarea" style="min-height: 120px;" placeholder="dear diary..."></textarea>
@@ -786,8 +789,8 @@
       </div>
 
       <div class="form-group" id="pol-caption-group">
-        <label>Date & Caption:</label>
-        <input type="text" id="pol-caption-input" class="form-input" placeholder="10/10/26 • late night">
+        <label>Caption / Date (Optional):</label>
+        <input type="text" id="pol-caption-input" class="form-input" placeholder="type caption or leave blank">
       </div>
 
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
@@ -848,6 +851,7 @@
         greetingCaption: '10/10/26 laila <3',
         dearInternetHeader: 'dear internet...',
         dearInternetText: "this website is written by me, for me. a place preserved from the noise of modern algorithms. don't take anything here too seriously. ~",
+        diaryHeader: 'diary entries // full journal',
         aboutMeTitle: 'About Me',
         currentlyTitle: 'Currently',
         favTitle: 'Favorite Things',
@@ -903,13 +907,14 @@
           mood: '2slimey (cypher verse)',
           body: 'hello world',
           image: 'images/photo1.jpg',
+          imageCaption: '',
           timestamp: Date.now()
         }
       ]
     };
 
     let appData = (function() {
-      const stored = localStorage.getItem('kittylailacat_data_v3');
+      const stored = localStorage.getItem('kittylailacat_data_v4');
       return stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(INITIAL_DATA));
     })();
 
@@ -969,7 +974,7 @@
     function openModal(id) { document.getElementById(id).classList.add('open'); }
     function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-    // Mobile Camera Roll optimization (<120KB for fast Firestore saving)
+    // Compress images directly on mobile to guarantee fast Firestore uploads
     function handleImageFileSelect(event, previewImgId, base64InputId) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1014,6 +1019,7 @@
       document.getElementById('post-img-base64').value = '';
       document.getElementById('post-img-preview').src = '';
       document.getElementById('post-img-preview-box').style.display = 'none';
+      document.getElementById('post-caption-input').value = '';
     }
 
     function handleAuthClick() {
@@ -1105,6 +1111,9 @@
       document.getElementById('el-dear-internet-header').innerText = s.dearInternetHeader || 'dear internet...';
       document.getElementById('el-dear-internet-text').innerText = s.dearInternetText;
 
+      // Fully editable diary header
+      document.getElementById('el-diary-header').innerText = s.diaryHeader || 'diary entries // full journal';
+
       document.getElementById('el-about-me-title').innerText = s.aboutMeTitle || 'About Me';
       document.getElementById('el-profile-name').innerText = p.name;
       document.getElementById('el-display-name').innerText = p.displayName;
@@ -1166,7 +1175,7 @@
           <button class="polaroid-delete-btn" onclick="deleteMemoryPhoto(${idx})">&times;</button>
           <div class="washi-tape-top"></div>
           <img class="admin-swappable-img" src="${m.img}" alt="memory" onerror="this.src='https://picsum.photos/seed/${idx}/300/300'" onclick="triggerPhotoSwap('memory', ${idx})">
-          <div class="polaroid-caption editable-any" id="pol-cap-${idx}">${escapeHtml(m.caption)}</div>
+          <div class="polaroid-caption editable-any" id="pol-cap-${idx}">${escapeHtml(m.caption || '')}</div>
         `;
         grid.appendChild(card);
       });
@@ -1185,7 +1194,7 @@
       }
     }
 
-    // Helper to generate the exact polaroid post HTML
+    // Generate post cards with NO assumed caption
     function createPostCardHTML(post) {
       return `
         <article class="retro-box">
@@ -1213,7 +1222,7 @@
                   <div class="polaroid-frame">
                     <div class="washi-tape-top"></div>
                     <img class="admin-swappable-img" src="${post.image}" alt="post photo" style="width: 220px; height: 230px;" onerror="this.src='https://picsum.photos/seed/laila1/300/300'" onclick="triggerPhotoSwap('post_img', '${post.id}')">
-                    <div class="polaroid-caption">${escapeHtml(post.date)} &bull; laila &lt;3</div>
+                    ${post.imageCaption ? `<div class="polaroid-caption editable-any" id="post-cap-${post.id}">${escapeHtml(post.imageCaption)}</div>` : ''}
                   </div>
                 </div>
               ` : ''}
@@ -1260,7 +1269,7 @@
       if (type === 'new_memory') {
         heading.innerText = '✦ PIN NEW POLAROID';
         capGroup.style.display = 'block';
-        document.getElementById('pol-caption-input').value = '10/10/26 • late night';
+        document.getElementById('pol-caption-input').value = ''; // Clean start, no assumptions
       } else if (type === 'memory') {
         heading.innerText = '✦ SWAP POLAROID PHOTO';
         capGroup.style.display = 'none';
@@ -1292,7 +1301,7 @@
       } else if (type === 'new_memory') {
         appData.memories.push({
           img: imgBase64,
-          caption: caption || '10/10/26'
+          caption: caption || ''
         });
       } else if (type === 'post_img') {
         const pIdx = appData.posts.findIndex(p => p.id === idx);
@@ -1336,6 +1345,11 @@
       s.greetingCaption = document.getElementById('el-greeting-caption').innerText.trim();
       s.dearInternetHeader = document.getElementById('el-dear-internet-header').innerText.trim();
       s.dearInternetText = document.getElementById('el-dear-internet-text').innerText.trim();
+
+      // Save the editable diary header!
+      const diaryH = document.getElementById('el-diary-header');
+      if (diaryH) s.diaryHeader = diaryH.innerText.trim();
+
       s.aboutMeTitle = document.getElementById('el-about-me-title').innerText.trim();
       s.currentlyTitle = document.getElementById('el-currently-title').innerText.trim();
       s.favTitle = document.getElementById('el-fav-title').innerText.trim();
@@ -1375,7 +1389,7 @@
         if (val) item.val = val.innerText.trim();
       });
 
-      localStorage.setItem('kittylailacat_data_v3', JSON.stringify(appData));
+      localStorage.setItem('kittylailacat_data_v4', JSON.stringify(appData));
 
       if (isFirebaseReady) {
         db.collection('site_config').doc('main').set({
@@ -1402,6 +1416,7 @@
       document.getElementById('post-date-input').value = '10/10/26';
       document.getElementById('post-mood-input').value = '';
       document.getElementById('post-body-input').value = '';
+      document.getElementById('post-caption-input').value = '';
       clearPostPreview();
       openModal('postModal');
     }
@@ -1416,6 +1431,7 @@
       document.getElementById('post-date-input').value = post.date;
       document.getElementById('post-mood-input').value = post.mood || '';
       document.getElementById('post-body-input').value = post.body;
+      document.getElementById('post-caption-input').value = post.imageCaption || '';
 
       if (post.image) {
         document.getElementById('post-img-base64').value = post.image;
@@ -1428,7 +1444,6 @@
       openModal('postModal');
     }
 
-    // Resilient save logic using .set() with merge
     function savePostToCloud() {
       const id = document.getElementById('editing-post-id').value;
       const title = document.getElementById('post-title-input').value.trim();
@@ -1436,6 +1451,7 @@
       const date = document.getElementById('post-date-input').value.trim() || '10/10/26';
       const mood = document.getElementById('post-mood-input').value.trim();
       const img = document.getElementById('post-img-base64').value;
+      const caption = document.getElementById('post-caption-input').value.trim();
       const saveBtn = document.getElementById('post-save-btn');
 
       if (!title || !body) {
@@ -1449,6 +1465,7 @@
       const postData = {
         title, body, date, mood,
         image: img || '',
+        imageCaption: caption || '',
         timestamp: Date.now()
       };
 
@@ -1466,12 +1483,11 @@
             saveBtn.disabled = false;
             showToast("Cloud error: " + err.message);
             
-            // Fallback to local storage so nothing is ever lost
             postData.id = id || ('post-' + Date.now());
             const idx = appData.posts.findIndex(p => p.id === postData.id);
             if (idx !== -1) appData.posts[idx] = postData;
             else appData.posts.unshift(postData);
-            localStorage.setItem('kittylailacat_data_v3', JSON.stringify(appData));
+            localStorage.setItem('kittylailacat_data_v4', JSON.stringify(appData));
             closeModal('postModal');
             renderPosts();
           });
@@ -1482,7 +1498,7 @@
         const idx = appData.posts.findIndex(p => p.id === postData.id);
         if (idx !== -1) appData.posts[idx] = postData;
         else appData.posts.unshift(postData);
-        localStorage.setItem('kittylailacat_data_v3', JSON.stringify(appData));
+        localStorage.setItem('kittylailacat_data_v4', JSON.stringify(appData));
         closeModal('postModal');
         renderPosts();
         showToast("Saved locally!");
@@ -1497,7 +1513,7 @@
             .catch(err => showToast("Delete failed: " + err.message));
         } else {
           appData.posts = appData.posts.filter(p => p.id !== postId);
-          localStorage.setItem('kittylailacat_data_v3', JSON.stringify(appData));
+          localStorage.setItem('kittylailacat_data_v4', JSON.stringify(appData));
           renderPosts();
           showToast("Post deleted.");
         }
