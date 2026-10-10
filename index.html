@@ -468,7 +468,7 @@
         <div class="banner-subtitle" id="el-site-sub" class="editable-any">welcome to lailaland ~ mrow</div>
       </div>
       <div class="status-badge" onclick="toggleOnlineStatus()">
-        <span class="status-dot" id="el-status-dot"></span>
+        <span class="status-dot online" id="el-status-dot"></span>
         <span id="el-status-text" class="editable-any">currently online</span>
       </div>
     </header>
@@ -547,7 +547,6 @@
               <button class="retro-btn pink" style="padding: 2px 8px;" onclick="openPostModal()">+ write entry</button>
             </div>
             <div class="retro-box-body">
-              <!-- Full post stream in diary tab with all pictures (clean without flavor text) -->
               <div id="diary-posts-container"></div>
             </div>
           </div>
@@ -664,8 +663,8 @@
             <div class="stamps-grid" id="stamps-container">
               <div class="retro-badge pink editable-any" id="badge-1">&hearts; LIAM &hearts;</div>
               <div class="retro-badge editable-any" id="badge-2">ᓚᘏᗢ NETTSPEND</div>
-              <div class="retro-badge pink editable-any" id="badge-3">BEST VIEWED 1024x768</div>
-              <div class="retro-badge editable-any" id="badge-4">TIRED 24/7</div>
+              <div class="retro-badge pink editable-any" id="badge-3">cutie</div>
+              <div class="retro-badge editable-any" id="badge-4">thug life</div>
             </div>
             <div class="pixel-cat-art editable-any" id="el-cat-art">
   /\_/\  
@@ -749,7 +748,6 @@
         </div>
       </div>
 
-      <!-- Explicit Optional Photo Caption (Not assumed!) -->
       <div class="form-group">
         <label>Photo Caption (Optional - leave blank for none):</label>
         <input type="text" id="post-caption-input" class="form-input" placeholder="leave blank for no caption under photo">
@@ -844,7 +842,7 @@
         title: 'kittylailacat',
         subtitle: 'welcome to lailaland ~ mrow',
         statusText: 'currently online',
-        isOnline: false,
+        isOnline: true,
         greetingHeader: 'greeting:',
         greetingText: '<strong style="color: var(--accent-pink);">hello visitor &lt;3</strong><br>welcome to my little private corner of cyberspace. this is my personal sanctuary for late night thoughts, photos, and dreams.',
         greetingImg: 'images/photo2.jpg',
@@ -914,7 +912,7 @@
     };
 
     let appData = (function() {
-      const stored = localStorage.getItem('kittylailacat_data_v4');
+      const stored = localStorage.getItem('kittylailacat_data_v5');
       return stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(INITIAL_DATA));
     })();
 
@@ -974,7 +972,6 @@
     function openModal(id) { document.getElementById(id).classList.add('open'); }
     function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-    // Compress images directly on mobile to guarantee fast Firestore uploads
     function handleImageFileSelect(event, previewImgId, base64InputId) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1111,7 +1108,6 @@
       document.getElementById('el-dear-internet-header').innerText = s.dearInternetHeader || 'dear internet...';
       document.getElementById('el-dear-internet-text').innerText = s.dearInternetText;
 
-      // Fully editable diary header
       document.getElementById('el-diary-header').innerText = s.diaryHeader || 'diary entries // full journal';
 
       document.getElementById('el-about-me-title').innerText = s.aboutMeTitle || 'About Me';
@@ -1194,7 +1190,6 @@
       }
     }
 
-    // Generate post cards with NO assumed caption
     function createPostCardHTML(post) {
       return `
         <article class="retro-box">
@@ -1269,7 +1264,7 @@
       if (type === 'new_memory') {
         heading.innerText = '✦ PIN NEW POLAROID';
         capGroup.style.display = 'block';
-        document.getElementById('pol-caption-input').value = ''; // Clean start, no assumptions
+        document.getElementById('pol-caption-input').value = '';
       } else if (type === 'memory') {
         heading.innerText = '✦ SWAP POLAROID PHOTO';
         capGroup.style.display = 'none';
@@ -1327,7 +1322,7 @@
     function toggleOnlineStatus() {
       if (!currentUser) return;
       appData.site.isOnline = !appData.site.isOnline;
-      appData.site.statusText = appData.site.isOnline ? "currently online" : "currently online";
+      appData.site.statusText = appData.site.isOnline ? "currently online" : "currently offline";
       saveAllInlineEditsToCloud();
     }
 
@@ -1346,7 +1341,6 @@
       s.dearInternetHeader = document.getElementById('el-dear-internet-header').innerText.trim();
       s.dearInternetText = document.getElementById('el-dear-internet-text').innerText.trim();
 
-      // Save the editable diary header!
       const diaryH = document.getElementById('el-diary-header');
       if (diaryH) s.diaryHeader = diaryH.innerText.trim();
 
@@ -1389,7 +1383,7 @@
         if (val) item.val = val.innerText.trim();
       });
 
-      localStorage.setItem('kittylailacat_data_v4', JSON.stringify(appData));
+      localStorage.setItem('kittylailacat_data_v5', JSON.stringify(appData));
 
       if (isFirebaseReady) {
         db.collection('site_config').doc('main').set({
@@ -1487,7 +1481,7 @@
             const idx = appData.posts.findIndex(p => p.id === postData.id);
             if (idx !== -1) appData.posts[idx] = postData;
             else appData.posts.unshift(postData);
-            localStorage.setItem('kittylailacat_data_v4', JSON.stringify(appData));
+            localStorage.setItem('kittylailacat_data_v5', JSON.stringify(appData));
             closeModal('postModal');
             renderPosts();
           });
@@ -1498,7 +1492,7 @@
         const idx = appData.posts.findIndex(p => p.id === postData.id);
         if (idx !== -1) appData.posts[idx] = postData;
         else appData.posts.unshift(postData);
-        localStorage.setItem('kittylailacat_data_v4', JSON.stringify(appData));
+        localStorage.setItem('kittylailacat_data_v5', JSON.stringify(appData));
         closeModal('postModal');
         renderPosts();
         showToast("Saved locally!");
@@ -1513,7 +1507,7 @@
             .catch(err => showToast("Delete failed: " + err.message));
         } else {
           appData.posts = appData.posts.filter(p => p.id !== postId);
-          localStorage.setItem('kittylailacat_data_v4', JSON.stringify(appData));
+          localStorage.setItem('kittylailacat_data_v5', JSON.stringify(appData));
           renderPosts();
           showToast("Post deleted.");
         }
