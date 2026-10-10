@@ -31,7 +31,7 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* 2006 Pink & Lavender Gingham Wallpaper */
+    /* 2006 Gingham Wallpaper */
     body {
       background-color: #f7d6e6;
       background-image: 
@@ -59,21 +59,43 @@
       position: relative;
     }
 
-    /* Floating Cloud Sync Admin Toolbar */
+    /* Admin Toolbar */
     #admin-bar {
       display: none;
       background: #2a0b1d;
       border: 2px solid var(--accent-pink);
-      padding: 8px 14px;
+      padding: 10px 14px;
       margin-bottom: 12px;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
       font-family: 'Silkscreen', monospace;
       font-size: 11px;
       color: var(--pale-lavender);
-      box-shadow: 0 0 10px rgba(255, 114, 189, 0.3);
+      box-shadow: 0 0 12px rgba(255, 114, 189, 0.4);
     }
     #admin-bar.active { display: flex; }
+
+    /* Visual Indicator for Editable Text When in Admin Mode */
+    body.is-admin [contenteditable="true"] {
+      outline: 1px dashed var(--accent-pink);
+      outline-offset: 2px;
+      background: rgba(255, 114, 189, 0.08);
+      cursor: text;
+    }
+    body.is-admin [contenteditable="true"]:focus {
+      outline: 2px solid var(--accent-pink);
+      background: rgba(255, 114, 189, 0.15);
+    }
+    body.is-admin .admin-swappable-img {
+      cursor: pointer;
+      position: relative;
+    }
+    body.is-admin .admin-swappable-img:hover {
+      filter: brightness(1.15) contrast(1.1);
+      box-shadow: 0 0 10px var(--accent-pink);
+    }
 
     /* Top Banner */
     .top-banner {
@@ -117,7 +139,6 @@
       height: 10px;
       border-radius: 50%;
       background: #78716c;
-      box-shadow: 0 0 4px #57534e;
     }
     .status-dot.online {
       background: #22c55e;
@@ -189,6 +210,7 @@
       background: var(--panel-dark);
       border: 2px solid var(--border-purple);
       margin-bottom: 16px;
+      position: relative;
     }
     .retro-box-header {
       background: #2d2237;
@@ -203,10 +225,10 @@
     }
     .retro-box-body { padding: 14px; }
 
-    /* Polaroids */
+    /* Polaroid Styles */
     .polaroid-frame {
       background: #fbf7ee;
-      padding: 8px 8px 20px 8px;
+      padding: 8px 8px 18px 8px;
       box-shadow: 2px 4px 10px rgba(0,0,0,0.6);
       position: relative;
       text-align: center;
@@ -225,9 +247,10 @@
     }
     .polaroid-caption {
       color: #3b2b47;
-      font-size: 11px;
+      font-size: 12px;
       font-family: 'VT323', monospace;
       margin-top: 6px;
+      min-height: 16px;
     }
 
     .washi-tape-top {
@@ -240,7 +263,28 @@
       border-left: 2px dashed rgba(180, 160, 200, 0.6);
       border-right: 2px dashed rgba(180, 160, 200, 0.6);
       transform: rotate(2deg);
+      pointer-events: none;
     }
+
+    .polaroid-delete-btn {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #ff4757;
+      color: white;
+      border: 1px solid #000;
+      width: 20px;
+      height: 20px;
+      font-size: 11px;
+      font-family: sans-serif;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      z-index: 10;
+    }
+    body.is-admin .polaroid-delete-btn { display: flex; }
 
     /* Heart Avatar */
     .heart-avatar-wrapper {
@@ -278,7 +322,7 @@
     .post-meta-row { display: flex; gap: 14px; font-family: 'VT323', monospace; font-size: 16px; color: var(--text-muted); }
     .post-body { font-size: 14px; color: var(--text-main); margin: 12px 0; white-space: pre-wrap; }
 
-    /* Badges */
+    /* Stamps & Blinkies */
     .stamps-grid { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
     .retro-badge {
       font-family: 'VT323', monospace;
@@ -300,17 +344,6 @@
       margin-top: 8px;
     }
 
-    .visitor-odometer {
-      font-family: 'VT323', monospace;
-      font-size: 20px;
-      letter-spacing: 3px;
-      background: #0d0a11;
-      border: 2px inset #473255;
-      padding: 3px 8px;
-      color: #38bdf8;
-      display: inline-block;
-    }
-
     /* Views */
     .view-panel { display: none; }
     .view-panel.active { display: block; }
@@ -319,6 +352,25 @@
     .survey-table td { padding: 8px 10px; border: 1px solid var(--border-purple); font-size: 13px; }
     .survey-table td.label-col { width: 35%; background: #2b1f35; color: var(--pale-lavender); font-weight: bold; }
     .survey-table td.val-col { background: #1c1524; color: var(--text-muted); }
+
+    /* Scrapbook Add Card */
+    .add-polaroid-card {
+      border: 2px dashed var(--accent-pink);
+      background: rgba(255, 114, 189, 0.05);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+      cursor: pointer;
+      color: var(--accent-pink);
+      font-family: 'Silkscreen', monospace;
+      font-size: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+    body.is-admin .add-polaroid-card { display: flex; }
+    .add-polaroid-card:hover { background: rgba(255, 114, 189, 0.15); }
 
     /* Modals */
     .modal-backdrop {
@@ -339,7 +391,7 @@
       border: 3px solid var(--accent-pink);
       box-shadow: 0 0 25px rgba(255, 114, 189, 0.4);
       width: 100%;
-      max-width: 680px;
+      max-width: 520px;
       max-height: 90vh;
       overflow-y: auto;
       padding: 16px;
@@ -373,30 +425,6 @@
       font-size: 13px;
     }
     .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--accent-pink); }
-    .form-textarea { min-height: 80px; resize: vertical; }
-
-    .tabs-row { display: flex; gap: 8px; border-bottom: 1px solid var(--border-purple); margin-bottom: 14px; }
-    .tab-btn {
-      background: #181220;
-      border: 1px solid var(--border-purple);
-      border-bottom: none;
-      color: var(--text-muted);
-      padding: 6px 10px;
-      cursor: pointer;
-      font-family: 'Silkscreen', monospace;
-      font-size: 10px;
-    }
-    .tab-btn.active { background: #372445; color: var(--accent-pink); border-color: var(--accent-pink); }
-
-    .checkbox-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 0;
-      border-bottom: 1px dashed #2d2138;
-      font-size: 13px;
-    }
-    .checkbox-item input { accent-color: var(--accent-pink); cursor: pointer; }
 
     .site-footer {
       margin-top: 24px;
@@ -412,12 +440,12 @@
 
   <div class="site-wrapper">
 
-    <!-- ADMIN CLOUD TOOLBAR -->
+    <!-- FLOATING ADMIN ACTION BAR -->
     <div id="admin-bar">
-      <div>✦ LOGGED IN AS LAILA (CLOUD SYNC ACTIVE)</div>
+      <div>✦ ADMIN MODE ACTIVE &bull; Click any text/photo to edit directly!</div>
       <div style="display: flex; gap: 8px;">
-        <button class="retro-btn pink" onclick="openSettingsModal()">[ ⚙ EDIT SITE CONTENT ]</button>
-        <button class="retro-btn" onclick="openPostModal()">[ + NEW POST ]</button>
+        <button class="retro-btn pink" onclick="saveAllInlineEditsToCloud()">[ 💾 SAVE EDITS TO CLOUD ]</button>
+        <button class="retro-btn" onclick="openNewPostModal()">[ + NEW POST ]</button>
         <button class="retro-btn" onclick="logoutFirebase()">[ LOGOUT ]</button>
       </div>
     </div>
@@ -428,13 +456,13 @@
         <h1 id="el-site-title">kittylailacat</h1>
         <div class="banner-subtitle" id="el-site-sub">welcome to lailaland ~ mrow</div>
       </div>
-      <div class="status-badge">
+      <div class="status-badge" onclick="toggleOnlineStatus()">
         <span class="status-dot" id="el-status-dot"></span>
         <span id="el-status-text">currently offline</span>
       </div>
     </header>
 
-    <!-- 2. Retro Navigation Bar -->
+    <!-- 2. Retro Navigation Bar (GUESTBOOK REMOVED) -->
     <nav class="nav-bar">
       <ul class="nav-links">
         <span style="color: var(--dusty-pink);">✦</span>
@@ -442,14 +470,13 @@
         <li><a onclick="switchTab('diary')" id="tab-diary">[ diary ]</a></li>
         <li><a onclick="switchTab('memories')" id="tab-memories">[ memories ]</a></li>
         <li><a onclick="switchTab('about')" id="tab-about">[ about ]</a></li>
-        <li id="nav-item-guestbook"><a onclick="switchTab('guestbook')" id="tab-guestbook">[ guestbook ]</a></li>
         <span style="color: var(--dusty-pink);">✦</span>
       </ul>
 
       <button class="retro-btn" id="login-toggle-btn" onclick="handleAuthClick()">[ ✎ admin login ]</button>
     </nav>
 
-    <!-- 3. Main Two-Column Grid -->
+    <!-- 3. Main Grid -->
     <div class="content-grid">
 
       <!-- LEFT COLUMN -->
@@ -458,8 +485,8 @@
         <!-- ================= HOME ================= -->
         <section id="view-home" class="view-panel active">
           
-          <!-- Optional Greeting Box -->
-          <div class="retro-box" id="widget-greeting">
+          <!-- Greeting Box -->
+          <div class="retro-box">
             <div class="retro-box-header">
               <span>greeting:</span>
               <span>&hearts;</span>
@@ -470,17 +497,17 @@
                   <strong style="color: var(--accent-pink);">hello visitor &lt;3</strong><br>
                   welcome to my little private corner of cyberspace. this is my personal sanctuary for late night thoughts, photos, and dreams.
                 </div>
-                <div class="polaroid-frame" onclick="switchTab('memories')">
+                <div class="polaroid-frame">
                   <div class="washi-tape-top"></div>
-                  <img src="images/photo2.jpg" alt="photo" onerror="this.src='https://picsum.photos/seed/laila2/300/300'">
-                  <div class="polaroid-caption">10/10/26 laila &lt;3</div>
+                  <img id="el-greeting-img" class="admin-swappable-img" src="images/photo2.jpg" alt="photo" onerror="this.src='https://picsum.photos/seed/laila2/300/300'" onclick="swapImageDirectly('el-greeting-img')">
+                  <div class="polaroid-caption" id="el-greeting-caption">10/10/26 laila &lt;3</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Optional Dear Internet Box -->
-          <div class="retro-box" id="widget-dear-internet">
+          <!-- Dear Internet Box -->
+          <div class="retro-box">
             <div class="retro-box-header">
               <span>dear internet...</span>
               <span>(=^･ω･^=)</span>
@@ -493,9 +520,7 @@
           </div>
 
           <!-- Diary Posts -->
-          <div id="posts-container">
-            <p style="color: var(--text-muted); padding: 10px;">connecting to cyberspace...</p>
-          </div>
+          <div id="posts-container"></div>
 
         </section>
 
@@ -512,18 +537,20 @@
           </div>
         </section>
 
-        <!-- ================= MEMORIES ================= -->
+        <!-- ================= MEMORIES (POLAROID SCRAPBOOK) ================= -->
         <section id="view-memories" class="view-panel">
           <div class="retro-box">
             <div class="retro-box-header">
               <span>memories // digital scrapbook</span>
-              <button class="retro-btn pink" style="padding: 2px 8px;" onclick="addScrapbookPhotoPrompt()">+ pin photo</button>
+              <span>camera</span>
             </div>
             <div class="retro-box-body">
               <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
                 polaroids, low-res flash photos, and moments saved in time.
               </p>
+              
               <div class="memories-grid" id="memories-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px;">
+                <!-- Generated Polaroids + Add Button -->
               </div>
             </div>
           </div>
@@ -542,37 +569,13 @@
           </div>
         </section>
 
-        <!-- ================= GUESTBOOK ================= -->
-        <section id="view-guestbook" class="view-panel">
-          <div class="retro-box">
-            <div class="retro-box-header">
-              <span>guestbook // leave a note</span>
-              <span>[ whisper mode ]</span>
-            </div>
-            <div class="retro-box-body">
-              <div style="background: #17111e; border: 1px dashed var(--border-purple); padding: 12px; margin-bottom: 16px;">
-                <div class="form-group">
-                  <label>alias:</label>
-                  <input type="text" id="gb-name" class="form-input" placeholder="stranger">
-                </div>
-                <div class="form-group">
-                  <label>message:</label>
-                  <textarea id="gb-msg" class="form-textarea" style="min-height: 60px;" placeholder="leave a sweet whisper..."></textarea>
-                </div>
-                <button class="retro-btn pink" onclick="signGuestbook()">[ sign guestbook ]</button>
-              </div>
-              <div id="guestbook-entries"></div>
-            </div>
-          </div>
-        </section>
-
       </main>
 
       <!-- RIGHT COLUMN (SIDEBAR) -->
       <aside class="right-col">
 
         <!-- Profile Widget -->
-        <div class="retro-box" id="widget-profile">
+        <div class="retro-box">
           <div class="retro-box-header">
             <span>About Me</span>
             <span>&hearts;</span>
@@ -585,7 +588,7 @@
                     <path d="M 80,140 C 80,140 10,92 10,48 C 10,22 32,8 56,8 C 69,8 76,16 80,22 C 84,16 91,8 104,8 C 128,8 150,22 150,48 C 150,92 80,140 80,140 Z"/>
                   </clipPath>
                 </defs>
-                <image id="el-profile-img" href="images/avatar.jpg" width="160" height="150" preserveAspectRatio="xMidYMid slice" clip-path="url(#heartClip)" onerror="this.setAttribute('href','https://picsum.photos/seed/laila4/300/300')"/>
+                <image id="el-profile-img" class="admin-swappable-img" href="images/avatar.jpg" width="160" height="150" preserveAspectRatio="xMidYMid slice" clip-path="url(#heartClip)" onerror="this.setAttribute('href','https://picsum.photos/seed/laila4/300/300')" onclick="swapAvatarImage()"/>
                 <path d="M 80,140 C 80,140 10,92 10,48 C 10,22 32,8 56,8 C 69,8 76,16 80,22 C 84,16 91,8 104,8 C 128,8 150,22 150,48 C 150,92 80,140 80,140 Z" fill="none" stroke="#ff72bd" stroke-width="3" stroke-dasharray="6,4"/>
               </svg>
             </div>
@@ -596,7 +599,7 @@
         </div>
 
         <!-- Currently Widget -->
-        <div class="retro-box" id="widget-currently">
+        <div class="retro-box">
           <div class="retro-box-header">
             <span>Currently</span>
             <span>♪</span>
@@ -613,7 +616,7 @@
         </div>
 
         <!-- Favorite Things -->
-        <div class="retro-box" id="widget-favorites">
+        <div class="retro-box">
           <div class="retro-box-header">
             <span>Favorite Things</span>
             <span>★</span>
@@ -626,7 +629,7 @@
         </div>
 
         <!-- Updates Widget -->
-        <div class="retro-box" id="widget-updates">
+        <div class="retro-box">
           <div class="retro-box-header">
             <span>Updates</span>
             <span>[!]</span>
@@ -639,7 +642,7 @@
         </div>
 
         <!-- Stamps & Blinkies -->
-        <div class="retro-box" id="widget-badges">
+        <div class="retro-box">
           <div class="retro-box-header">
             <span>Stamps & Blinkies</span>
             <span>✧</span>
@@ -659,41 +662,6 @@
           </div>
         </div>
 
-        <!-- Mini Polaroids Stack -->
-        <div class="retro-box" id="widget-mini-polaroids">
-          <div class="retro-box-header">
-            <span>Mini Scrapbook</span>
-            <span>camera</span>
-          </div>
-          <div class="retro-box-body" style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
-            <div class="polaroid-frame">
-              <div class="washi-tape-top"></div>
-              <img src="images/photo1.jpg" alt="snap" onerror="this.src='https://picsum.photos/seed/laila1/300/300'">
-              <div class="polaroid-caption">10/10/26 &bull; laila &lt;3</div>
-            </div>
-            <div class="polaroid-frame">
-              <div class="washi-tape-top"></div>
-              <img src="images/photo3.jpg" alt="snap" onerror="this.src='https://picsum.photos/seed/laila3/300/300'">
-              <div class="polaroid-caption">10/10/26 &bull; laila &lt;3</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Visitor Stats -->
-        <div class="retro-box" id="widget-stats">
-          <div class="retro-box-header">
-            <span>Site Stats</span>
-            <span>#</span>
-          </div>
-          <div class="retro-box-body" style="text-align: center;">
-            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">visitors count:</div>
-            <div class="visitor-odometer">001337</div>
-            <div style="font-size: 11px; color: var(--dusty-pink); margin-top: 8px;">
-              entries: <span id="stat-posts">1</span> | photos: <span id="stat-photos">4</span>
-            </div>
-          </div>
-        </div>
-
       </aside>
 
     </div>
@@ -709,16 +677,13 @@
 
   </div>
 
-  <!-- ==========================================================
-       MODAL 1: FIREBASE EMAIL/PASSWORD LOGIN
-       ========================================================== -->
+  <!-- LOGIN MODAL -->
   <div class="modal-backdrop" id="loginModal">
-    <div class="modal-window" style="max-width: 420px;">
+    <div class="modal-window">
       <div class="modal-title">
         <span>✎ ADMIN LOGIN</span>
         <button style="background:none; border:none; color:var(--accent-pink); font-size:18px; cursor:pointer;" onclick="closeLoginModal()">&times;</button>
       </div>
-
       <div class="form-group">
         <label>Admin Email:</label>
         <input type="email" id="login-email" class="form-input" placeholder="laila@example.com">
@@ -727,141 +692,24 @@
         <label>Password:</label>
         <input type="password" id="login-pass" class="form-input" placeholder="••••••••">
       </div>
-
-      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
         <button class="retro-btn" onclick="closeLoginModal()">[ CANCEL ]</button>
         <button class="retro-btn pink" onclick="submitFirebaseLogin()">[ SIGN IN ]</button>
       </div>
     </div>
   </div>
 
-  <!-- ==========================================================
-       MODAL 2: SITE CUSTOMIZER (EDIT EVERYTHING)
-       ========================================================== -->
-  <div class="modal-backdrop" id="settingsModal">
-    <div class="modal-window">
-      <div class="modal-title">
-        <span>⚙ EDIT SITE CONTENT & VISIBILITY</span>
-        <button style="background: none; border: none; color: var(--accent-pink); font-size: 18px; cursor: pointer;" onclick="closeSettingsModal()">&times;</button>
-      </div>
-
-      <div class="tabs-row">
-        <button class="tab-btn active" onclick="switchSettingTab('set-header')">Header</button>
-        <button class="tab-btn" onclick="switchSettingTab('set-profile')">Profile & Status</button>
-        <button class="tab-btn" onclick="switchSettingTab('set-survey')">About Survey</button>
-        <button class="tab-btn" onclick="switchSettingTab('set-toggles')">Turn Off Widgets</button>
-      </div>
-
-      <!-- Tab: Header -->
-      <div id="set-header" class="setting-tab-content">
-        <div class="form-group">
-          <label>Website Title:</label>
-          <input type="text" id="cfg-title" class="form-input">
-        </div>
-        <div class="form-group">
-          <label>Subtitle / Tagline:</label>
-          <input type="text" id="cfg-subtitle" class="form-input">
-        </div>
-        <div class="form-group">
-          <label>Status Badge Text:</label>
-          <input type="text" id="cfg-status-text" class="form-input">
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="cfg-status-online">
-          <label for="cfg-status-online">Show green 'online' light instead of grey</label>
-        </div>
-      </div>
-
-      <!-- Tab: Profile & Currently -->
-      <div id="set-profile" class="setting-tab-content" style="display: none;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-          <div class="form-group">
-            <label>Nickname / Display Name:</label>
-            <input type="text" id="cfg-name" class="form-input">
-          </div>
-          <div class="form-group">
-            <label>Profile Picture URL / Path:</label>
-            <input type="text" id="cfg-avatar" class="form-input" placeholder="images/avatar.jpg">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Short Bio:</label>
-          <textarea id="cfg-bio" class="form-textarea" style="min-height: 50px;"></textarea>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-          <div class="form-group"><label>Listening To:</label><input type="text" id="cfg-listening" class="form-input"></div>
-          <div class="form-group"><label>Watching:</label><input type="text" id="cfg-watching" class="form-input"></div>
-          <div class="form-group"><label>Reading:</label><input type="text" id="cfg-reading" class="form-input"></div>
-          <div class="form-group"><label>Feeling:</label><input type="text" id="cfg-feeling" class="form-input"></div>
-        </div>
-        <div class="form-group"><label>Thinking About:</label><input type="text" id="cfg-thinking" class="form-input"></div>
-        <div class="form-group"><label>Favorite Things:</label><input type="text" id="cfg-favorites" class="form-input"></div>
-        <div class="form-group"><label>Site Updates Text:</label><input type="text" id="cfg-updates" class="form-input"></div>
-      </div>
-
-      <!-- Tab: Survey -->
-      <div id="set-survey" class="setting-tab-content" style="display: none;">
-        <p style="font-size: 12px; color: var(--dusty-pink); margin-bottom: 10px;">Edit any questionnaire response:</p>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;" id="survey-inputs-grid"></div>
-      </div>
-
-      <!-- Tab: Visibility Toggles (TURN OFF UNWANTED WIDGETS) -->
-      <div id="set-toggles" class="setting-tab-content" style="display: none;">
-        <p style="font-size: 12px; color: var(--dusty-pink); margin-bottom: 10px;">Uncheck anything you don't want on your website:</p>
-        <div class="checkbox-item">
-          <input type="checkbox" id="tog-greeting">
-          <label for="tog-greeting">Show Top Greeting Box</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="tog-dear-internet">
-          <label for="tog-dear-internet">Show 'Dear Internet...' Box</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="tog-badges">
-          <label for="tog-badges">Show Stamps & Blinkies Widget</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="tog-mini-polaroids">
-          <label for="tog-mini-polaroids">Show Sidebar Mini Scrapbook Polaroids</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="tog-updates">
-          <label for="tog-updates">Show 'Updates' Widget</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="tog-stats">
-          <label for="tog-stats">Show Site Statistics & Visitor Counter</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="tog-guestbook">
-          <label for="tog-guestbook">Show Guestbook Tab in Navigation</label>
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; border-top: 1px solid var(--border-purple); padding-top: 12px;">
-        <button class="retro-btn" onclick="closeSettingsModal()">[ CANCEL ]</button>
-        <button class="retro-btn pink" onclick="saveSiteSettingsToCloud()">[ SAVE EVERYWHERE ]</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================================
-       MODAL 3: WRITE / EDIT POST
-       ========================================================== -->
+  <!-- NEW POST MODAL -->
   <div class="modal-backdrop" id="postModal">
     <div class="modal-window">
       <div class="modal-title">
-        <span id="post-modal-heading">✎ WRITE NEW DIARY ENTRY</span>
+        <span>✎ WRITE NEW DIARY ENTRY</span>
         <button style="background: none; border: none; color: var(--accent-pink); font-size: 18px; cursor: pointer;" onclick="closePostModal()">&times;</button>
       </div>
-
-      <input type="hidden" id="editing-post-id" value="">
-
       <div class="form-group">
         <label>Title:</label>
         <input type="text" id="post-title-input" class="form-input" placeholder="entry title...">
       </div>
-
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
         <div class="form-group">
           <label>Date:</label>
@@ -872,43 +720,35 @@
           <input type="text" id="post-mood-input" class="form-input" placeholder="e.g. birthday sex">
         </div>
       </div>
-
       <div class="form-group">
-        <label>Photo URL / Path (Optional):</label>
+        <label>Photo URL / File (Optional):</label>
         <input type="text" id="post-img-input" class="form-input" placeholder="images/photo1.jpg">
       </div>
-
       <div class="form-group">
         <label>Diary Body Text:</label>
         <textarea id="post-body-input" class="form-textarea" style="min-height: 120px;" placeholder="dear diary..."></textarea>
       </div>
-
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
         <button class="retro-btn" onclick="closePostModal()">[ cancel ]</button>
-        <button class="retro-btn pink" onclick="savePostToCloud()">[ publish to cloud ]</button>
+        <button class="retro-btn pink" onclick="publishNewPost()">[ publish to cloud ]</button>
       </div>
     </div>
   </div>
 
-  <!-- ==========================================================
-       FIREBASE INTEGRATION SCRIPT
-       ========================================================== -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
     /* ==========================================================
-       1. YOUR FIREBASE CONFIGURATION
-       PASTE YOUR CONFIG KEYS FROM THE FIREBASE CONSOLE RIGHT HERE:
+       1. FIREBASE CONFIGURATION
        ========================================================== */
-   const firebaseConfig = {
-  apiKey: "AIzaSyBDoQxZfWm31DI1zmKNGtEUMRT9VBdbVtc",
-  authDomain: "kittylailacat.firebaseapp.com",
-  projectId: "kittylailacat",
-  storageBucket: "kittylailacat.firebasestorage.app",
-  messagingSenderId: "230809478219",
-  appId: "1:230809478219:web:6a7c4e53f0976ebad319ce",
-  measurementId: "G-GN550ZJFRP"
-};
+    const firebaseConfig = {
+      apiKey: "PASTE_YOUR_API_KEY_HERE",
+      authDomain: "PASTE_YOUR_AUTH_DOMAIN_HERE",
+      projectId: "PASTE_YOUR_PROJECT_ID_HERE",
+      storageBucket: "PASTE_YOUR_STORAGE_BUCKET_HERE",
+      messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID_HERE",
+      appId: "PASTE_YOUR_APP_ID_HERE"
+    };
 
-    // Initialize Firebase
     let db = null;
     let auth = null;
     let isFirebaseReady = false;
@@ -919,10 +759,9 @@
         db = firebase.firestore();
         auth = firebase.auth();
         isFirebaseReady = true;
-        console.log("Firebase connected successfully!");
       }
     } catch (e) {
-      console.warn("Firebase not configured yet, falling back to local memory:", e);
+      console.warn("Firebase not loaded, using local storage fallback:", e);
     }
 
     // Default Seed Data
@@ -933,6 +772,8 @@
         statusText: 'currently offline',
         isOnline: false,
         greetingText: 'hello visitor <3\nwelcome to my little private corner of cyberspace. this is my personal sanctuary for late night thoughts, photos, and dreams.',
+        greetingImg: 'images/photo2.jpg',
+        greetingCaption: '10/10/26 laila <3',
         dearInternetText: "this website is written by me, for me. a place preserved from the noise of modern algorithms. don't take anything here too seriously. ~"
       },
       profile: {
@@ -949,26 +790,17 @@
         updates: 'no'
       },
       survey: [
-        { key: 'intro', label: 'intro:', val: 'n/a' },
-        { key: 'music', label: 'favourite music:', val: 'nettspend' },
-        { key: 'movies', label: 'favourite movies:', val: 'n/a' },
-        { key: 'games', label: 'favourite games:', val: 'n/a' },
-        { key: 'hobbies', label: 'interests & hobbies:', val: 'n/a' },
-        { key: 'facts', label: 'random facts:', val: 'n/a' },
-        { key: 'likes', label: 'things i like:', val: 'my boyfriend liam' },
-        { key: 'dislikes', label: 'things i dislike:', val: 'n/a' },
-        { key: 'obsessions', label: 'current obsessions:', val: 'n/a' },
-        { key: 'links', label: 'other links:', val: 'n/a' }
+        { label: 'intro:', val: 'n/a' },
+        { label: 'favourite music:', val: 'nettspend' },
+        { label: 'favourite movies:', val: 'n/a' },
+        { label: 'favourite games:', val: 'n/a' },
+        { label: 'interests & hobbies:', val: 'n/a' },
+        { label: 'random facts:', val: 'n/a' },
+        { label: 'things i like:', val: 'my boyfriend liam' },
+        { label: 'things i dislike:', val: 'n/a' },
+        { label: 'current obsessions:', val: 'n/a' },
+        { label: 'other links:', val: 'n/a' }
       ],
-      toggles: {
-        showGreeting: true,
-        showDearInternet: true,
-        showBadges: true,
-        showMiniPolaroids: true,
-        showUpdates: true,
-        showStats: true,
-        showGuestbook: true
-      },
       memories: [
         { img: 'images/photo1.jpg', caption: '10/10/26 • late night' },
         { img: 'images/photo2.jpg', caption: '10/10/26 • fit check' },
@@ -987,53 +819,52 @@
       ]
     };
 
-    let appData = JSON.parse(JSON.stringify(INITIAL_DATA));
+    let appData = (function() {
+      const stored = localStorage.getItem('kittylailacat_data');
+      return stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(INITIAL_DATA));
+    })();
+
     let currentUser = null;
 
-    // Listen for Auth changes in Firebase
+    // Listen for Auth changes
     if (isFirebaseReady) {
       auth.onAuthStateChanged(user => {
         currentUser = user;
-        updateAdminBarUI();
+        updateAdminModeUI();
       });
 
-      // Realtime listener for Site Settings across all devices
+      // Realtime listener for Site Configuration
       db.collection('site_config').doc('main').onSnapshot(doc => {
         if (doc.exists) {
           const cloudData = doc.data();
           if (cloudData.site) appData.site = cloudData.site;
           if (cloudData.profile) appData.profile = cloudData.profile;
           if (cloudData.survey) appData.survey = cloudData.survey;
-          if (cloudData.toggles) appData.toggles = cloudData.toggles;
           if (cloudData.memories) appData.memories = cloudData.memories;
-          renderEntireSite();
+          renderSite();
         } else {
-          // Initialize cloud on first run
           db.collection('site_config').doc('main').set({
             site: appData.site,
             profile: appData.profile,
             survey: appData.survey,
-            toggles: appData.toggles,
             memories: appData.memories
           });
         }
       });
 
-      // Realtime listener for Diary Posts across all devices
+      // Realtime listener for Diary Posts
       db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
         if (!snapshot.empty) {
-          appData.posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        } else {
-          appData.posts = INITIAL_DATA.posts;
+          appData.posts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
         }
         renderPosts();
       });
     }
 
-    // 2. Authentication UI & Logic
+    // 2. Authentication
     function handleAuthClick() {
       if (currentUser) {
-        openSettingsModal();
+        saveAllInlineEditsToCloud();
       } else {
         document.getElementById('loginModal').classList.add('open');
       }
@@ -1048,42 +879,61 @@
       const pass = document.getElementById('login-pass').value.trim();
 
       if (!isFirebaseReady) {
-        alert("Please paste your Firebase keys into index.html first! (See instructions above)");
+        alert("Please connect Firebase keys in index.html first! (Saving locally for now)");
+        currentUser = { email: "local_admin" };
+        updateAdminModeUI();
+        closeLoginModal();
         return;
       }
 
       auth.signInWithEmailAndPassword(email, pass)
         .then(() => {
           closeLoginModal();
-          alert("Welcome back, Laila! Cloud sync is live. Any edits will save for everyone! ♥");
+          alert("Admin mode unlocked! You can now click and edit anything directly on the page. ♥");
         })
-        .catch(err => {
-          alert("Login error: " + err.message);
-        });
+        .catch(err => alert("Login error: " + err.message));
     }
 
     function logoutFirebase() {
-      if (isFirebaseReady) {
-        auth.signOut();
-      }
+      if (isFirebaseReady) auth.signOut();
       currentUser = null;
-      updateAdminBarUI();
+      updateAdminModeUI();
     }
 
-    function updateAdminBarUI() {
+    // 3. Admin Mode & ContentEditable Toggle
+    function updateAdminModeUI() {
       const adminBar = document.getElementById('admin-bar');
       const loginBtn = document.getElementById('login-toggle-btn');
-      if (currentUser) {
+      const isAdmin = currentUser !== null;
+
+      if (isAdmin) {
+        document.body.classList.add('is-admin');
         adminBar.classList.add('active');
-        loginBtn.innerText = '[ ⚙ edit page ]';
+        loginBtn.innerText = '[ 💾 save edits ]';
       } else {
+        document.body.classList.remove('is-admin');
         adminBar.classList.remove('active');
         loginBtn.innerText = '[ ✎ admin login ]';
       }
-      renderEntireSite();
+
+      // Toggle contenteditable on direct elements
+      const editableIds = [
+        'el-site-title', 'el-site-sub', 'el-status-text',
+        'el-profile-name', 'el-display-name', 'el-bio',
+        'el-curr-listening', 'el-curr-watching', 'el-curr-reading',
+        'el-curr-feeling', 'el-curr-thinking', 'el-favorite-things',
+        'el-updates', 'el-dear-internet-text', 'el-greeting-caption'
+      ];
+
+      editableIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.contentEditable = isAdmin ? "true" : "false";
+      });
+
+      renderSite();
     }
 
-    // 3. Tab Routing
+    // 4. Tab Navigation
     function switchTab(tabName) {
       document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
@@ -1095,23 +945,20 @@
       window.scrollTo({ top: 100, behavior: 'smooth' });
     }
 
-    // 4. Render Entire Site
-    function renderEntireSite() {
+    // 5. Render Site
+    function renderSite() {
       document.getElementById('page-title').innerText = `${appData.site.title} :: ${appData.site.subtitle}`;
       document.getElementById('el-site-title').innerText = appData.site.title;
       document.getElementById('el-site-sub').innerText = appData.site.subtitle;
       document.getElementById('el-status-text').innerText = appData.site.statusText;
-      
+
       const dot = document.getElementById('el-status-dot');
-      if (appData.site.isOnline) {
-        dot.classList.add('online');
-      } else {
-        dot.classList.remove('online');
-      }
+      if (appData.site.isOnline) dot.classList.add('online');
+      else dot.classList.remove('online');
 
       document.getElementById('el-profile-name').innerText = appData.profile.name;
       document.getElementById('el-display-name').innerText = appData.profile.displayName;
-      document.getElementById('el-bio').innerText = `"${appData.profile.bio}"`;
+      document.getElementById('el-bio').innerText = appData.profile.bio;
       document.getElementById('el-profile-img').setAttribute('href', appData.profile.avatar);
 
       document.getElementById('el-curr-listening').innerText = appData.profile.listening;
@@ -1122,39 +969,52 @@
       document.getElementById('el-favorite-things').innerText = appData.profile.favorites;
       document.getElementById('el-updates').innerText = appData.profile.updates;
 
-      document.getElementById('el-greeting-text').innerHTML = appData.site.greetingText.replace(/\n/g, '<br>');
       document.getElementById('el-dear-internet-text').innerText = appData.site.dearInternetText;
+      document.getElementById('el-greeting-img').src = appData.site.greetingImg;
+      document.getElementById('el-greeting-caption').innerText = appData.site.greetingCaption;
 
-      // Widget Toggles
-      document.getElementById('widget-greeting').style.display = appData.toggles.showGreeting ? 'block' : 'none';
-      document.getElementById('widget-dear-internet').style.display = appData.toggles.showDearInternet ? 'block' : 'none';
-      document.getElementById('widget-badges').style.display = appData.toggles.showBadges ? 'block' : 'none';
-      document.getElementById('widget-mini-polaroids').style.display = appData.toggles.showMiniPolaroids ? 'block' : 'none';
-      document.getElementById('widget-updates').style.display = appData.toggles.showUpdates ? 'block' : 'none';
-      document.getElementById('widget-stats').style.display = appData.toggles.showStats ? 'block' : 'none';
-      document.getElementById('nav-item-guestbook').style.display = appData.toggles.showGuestbook ? 'inline-block' : 'none';
-
-      // About Survey Table
+      // Survey Table with inline edit support
       const surveyTbl = document.getElementById('survey-table-body');
-      surveyTbl.innerHTML = appData.survey.map(item => `
+      surveyTbl.innerHTML = appData.survey.map((item, idx) => `
         <tr>
-          <td class="label-col">${escapeHtml(item.label)}</td>
-          <td class="val-col">${escapeHtml(item.val)}</td>
+          <td class="label-col" ${currentUser ? `contenteditable="true" id="survey-lbl-${idx}"` : ''}>${escapeHtml(item.label)}</td>
+          <td class="val-col" ${currentUser ? `contenteditable="true" id="survey-val-${idx}"` : ''}>${escapeHtml(item.val)}</td>
         </tr>
       `).join('');
 
-      // Memories Scrapbook
-      const memGrid = document.getElementById('memories-grid');
-      memGrid.innerHTML = appData.memories.map((m, idx) => `
-        <div class="polaroid-frame" style="width: 100%;">
-          <div class="washi-tape-top"></div>
-          <img src="${m.img}" alt="memory" onerror="this.src='https://picsum.photos/seed/${idx}/300/300'">
-          <div class="polaroid-caption">${escapeHtml(m.caption)}</div>
-          ${currentUser ? `<button onclick="deleteMemoryPhoto(${idx})" style="background:red; color:#fff; border:none; font-size:9px; cursor:pointer; margin-top:4px;">delete</button>` : ''}
-        </div>
-      `).join('');
-
+      // Scrapbook Polaroids Grid
+      renderMemories();
       renderPosts();
+    }
+
+    // Render Memories & Polaroid Add Card
+    function renderMemories() {
+      const grid = document.getElementById('memories-grid');
+      const isAdmin = currentUser !== null;
+      grid.innerHTML = '';
+
+      appData.memories.forEach((m, idx) => {
+        const card = document.createElement('div');
+        card.className = 'polaroid-frame';
+        card.style.width = '100%';
+        card.innerHTML = `
+          <button class="polaroid-delete-btn" onclick="deleteMemoryPhoto(${idx})">&times;</button>
+          <div class="washi-tape-top"></div>
+          <img class="admin-swappable-img" src="${m.img}" alt="memory" onerror="this.src='https://picsum.photos/seed/${idx}/300/300'" onclick="swapMemoryImage(${idx})">
+          <div class="polaroid-caption" ${isAdmin ? `contenteditable="true" id="pol-cap-${idx}"` : ''}>${escapeHtml(m.caption)}</div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // Add Polaroid Button Card
+      const addCard = document.createElement('div');
+      addCard.className = 'add-polaroid-card';
+      addCard.innerHTML = `
+        <div style="font-size: 24px; margin-bottom: 6px;">+</div>
+        <div>ADD NEW POLAROID</div>
+      `;
+      addCard.onclick = addNewPolaroidPrompt;
+      grid.appendChild(addCard);
     }
 
     // Render Posts
@@ -1171,10 +1031,7 @@
           <div class="retro-box-header">
             <span>post :: ${escapeHtml(post.title)}</span>
             ${currentUser ? `
-              <div>
-                <button class="retro-btn" style="padding: 1px 6px; font-size: 10px;" onclick="editPost('${post.id}')">edit</button>
-                <button class="retro-btn" style="padding: 1px 6px; font-size: 10px; color: #f87171;" onclick="deletePost('${post.id}')">delete</button>
-              </div>
+              <button class="retro-btn" style="padding: 1px 6px; font-size: 10px; color: #ff72bd;" onclick="deletePost('${post.id}')">[ delete ]</button>
             ` : '<span>&hearts;</span>'}
           </div>
           <div class="retro-box-body">
@@ -1191,7 +1048,7 @@
                 <div style="text-align: center; margin: 16px 0;">
                   <div class="polaroid-frame">
                     <div class="washi-tape-top"></div>
-                    <img src="${post.image}" alt="post photo" style="width: 220px; height: 230px;" onerror="this.src='https://picsum.photos/seed/laila1/300/300'">
+                    <img class="admin-swappable-img" src="${post.image}" alt="post photo" style="width: 220px; height: 230px;" onerror="this.src='https://picsum.photos/seed/laila1/300/300'" onclick="swapPostImage('${post.id}')">
                     <div class="polaroid-caption">${escapeHtml(post.date)} &bull; laila &lt;3</div>
                   </div>
                 </div>
@@ -1211,139 +1068,142 @@
       });
 
       document.getElementById('archive-count').innerText = `${appData.posts.length} entries`;
-      document.getElementById('stat-posts').innerText = appData.posts.length;
-      document.getElementById('stat-photos').innerText = appData.memories.length;
     }
 
-    // 5. Cloud Save Settings
-    function openSettingsModal() {
-      document.getElementById('cfg-title').value = appData.site.title;
-      document.getElementById('cfg-subtitle').value = appData.site.subtitle;
-      document.getElementById('cfg-status-text').value = appData.site.statusText;
-      document.getElementById('cfg-status-online').checked = appData.site.isOnline;
-
-      document.getElementById('cfg-name').value = appData.profile.name;
-      document.getElementById('cfg-avatar').value = appData.profile.avatar;
-      document.getElementById('cfg-bio').value = appData.profile.bio;
-      document.getElementById('cfg-listening').value = appData.profile.listening;
-      document.getElementById('cfg-watching').value = appData.profile.watching;
-      document.getElementById('cfg-reading').value = appData.profile.reading;
-      document.getElementById('cfg-feeling').value = appData.profile.feeling;
-      document.getElementById('cfg-thinking').value = appData.profile.thinking;
-      document.getElementById('cfg-favorites').value = appData.profile.favorites;
-      document.getElementById('cfg-updates').value = appData.profile.updates;
-
-      document.getElementById('tog-greeting').checked = appData.toggles.showGreeting;
-      document.getElementById('tog-dear-internet').checked = appData.toggles.showDearInternet;
-      document.getElementById('tog-badges').checked = appData.toggles.showBadges;
-      document.getElementById('tog-mini-polaroids').checked = appData.toggles.showMiniPolaroids;
-      document.getElementById('tog-updates').checked = appData.toggles.showUpdates;
-      document.getElementById('tog-stats').checked = appData.toggles.showStats;
-      document.getElementById('tog-guestbook').checked = appData.toggles.showGuestbook;
-
-      const grid = document.getElementById('survey-inputs-grid');
-      grid.innerHTML = appData.survey.map((s, i) => `
-        <div class="form-group">
-          <label>${escapeHtml(s.label)}</label>
-          <input type="text" id="survey-input-${i}" class="form-input" value="${escapeHtml(s.val)}">
-        </div>
-      `).join('');
-
-      document.getElementById('settingsModal').classList.add('open');
+    // 6. Direct Picture Swapping Functions
+    function swapAvatarImage() {
+      if (!currentUser) return;
+      const newUrl = prompt("Enter new avatar image path or URL:", appData.profile.avatar);
+      if (newUrl) {
+        appData.profile.avatar = newUrl.trim();
+        saveAllInlineEditsToCloud();
+      }
     }
 
-    function closeSettingsModal() {
-      document.getElementById('settingsModal').classList.remove('open');
+    function swapImageDirectly(imgElementId) {
+      if (!currentUser) return;
+      const imgEl = document.getElementById(imgElementId);
+      const newUrl = prompt("Enter image path or web URL:", imgEl.src);
+      if (newUrl) {
+        imgEl.src = newUrl.trim();
+        if (imgElementId === 'el-greeting-img') appData.site.greetingImg = newUrl.trim();
+        saveAllInlineEditsToCloud();
+      }
     }
 
-    function switchSettingTab(tabId) {
-      document.querySelectorAll('.setting-tab-content').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(tabId).style.display = 'block';
-      event.target.classList.add('active');
+    function swapMemoryImage(idx) {
+      if (!currentUser) return;
+      const newUrl = prompt("Enter new image path or URL for this polaroid:", appData.memories[idx].img);
+      if (newUrl) {
+        appData.memories[idx].img = newUrl.trim();
+        saveAllInlineEditsToCloud();
+      }
     }
 
-    function saveSiteSettingsToCloud() {
-      appData.site.title = document.getElementById('cfg-title').value.trim();
-      appData.site.subtitle = document.getElementById('cfg-subtitle').value.trim();
-      appData.site.statusText = document.getElementById('cfg-status-text').value.trim();
-      appData.site.isOnline = document.getElementById('cfg-status-online').checked;
+    function swapPostImage(postId) {
+      if (!currentUser) return;
+      const post = appData.posts.find(p => p.id === postId);
+      if (!post) return;
+      const newUrl = prompt("Enter new photo URL for this post:", post.image);
+      if (newUrl && isFirebaseReady) {
+        db.collection('posts').doc(postId).update({ image: newUrl.trim() });
+      }
+    }
 
-      appData.profile.name = document.getElementById('cfg-name').value.trim();
-      appData.profile.displayName = document.getElementById('cfg-name').value.trim();
-      appData.profile.avatar = document.getElementById('cfg-avatar').value.trim() || 'images/avatar.jpg';
-      appData.profile.bio = document.getElementById('cfg-bio').value.trim();
-      appData.profile.listening = document.getElementById('cfg-listening').value.trim();
-      appData.profile.watching = document.getElementById('cfg-watching').value.trim();
-      appData.profile.reading = document.getElementById('cfg-reading').value.trim();
-      appData.profile.feeling = document.getElementById('cfg-feeling').value.trim();
-      appData.profile.thinking = document.getElementById('cfg-thinking').value.trim();
-      appData.profile.favorites = document.getElementById('cfg-favorites').value.trim();
-      appData.profile.updates = document.getElementById('cfg-updates').value.trim();
-
-      appData.toggles.showGreeting = document.getElementById('tog-greeting').checked;
-      appData.toggles.showDearInternet = document.getElementById('tog-dear-internet').checked;
-      appData.toggles.showBadges = document.getElementById('tog-badges').checked;
-      appData.toggles.showMiniPolaroids = document.getElementById('tog-mini-polaroids').checked;
-      appData.toggles.showUpdates = document.getElementById('tog-updates').checked;
-      appData.toggles.showStats = document.getElementById('tog-stats').checked;
-      appData.toggles.showGuestbook = document.getElementById('tog-guestbook').checked;
-
-      appData.survey.forEach((s, i) => {
-        const inp = document.getElementById('survey-input-' + i);
-        if (inp) s.val = inp.value.trim() || 'n/a';
+    // 7. Adding & Deleting Polaroids
+    function addNewPolaroidPrompt() {
+      const img = prompt("Enter image file path or web link (e.g. images/photo3.jpg):", "images/photo1.jpg");
+      if (!img) return;
+      const caption = prompt("Enter date and caption (e.g. 10/10/26 • late night):", "10/10/26 • cute");
+      
+      appData.memories.push({
+        img: img.trim(),
+        caption: (caption || "10/10/26").trim()
       });
 
+      saveAllInlineEditsToCloud();
+    }
+
+    function deleteMemoryPhoto(idx) {
+      if (confirm("Remove this polaroid from your scrapbook?")) {
+        appData.memories.splice(idx, 1);
+        saveAllInlineEditsToCloud();
+      }
+    }
+
+    function toggleOnlineStatus() {
+      if (!currentUser) return;
+      appData.site.isOnline = !appData.site.isOnline;
+      appData.site.statusText = appData.site.isOnline ? "currently online" : "currently offline";
+      saveAllInlineEditsToCloud();
+    }
+
+    // 8. SAVE ALL DIRECT ON-PAGE EDITS TO FIREBASE
+    function saveAllInlineEditsToCloud() {
+      if (!currentUser) return;
+
+      // Extract text directly from what the user typed on the page
+      appData.site.title = document.getElementById('el-site-title').innerText.trim();
+      appData.site.subtitle = document.getElementById('el-site-sub').innerText.trim();
+      appData.site.statusText = document.getElementById('el-status-text').innerText.trim();
+      appData.site.dearInternetText = document.getElementById('el-dear-internet-text').innerText.trim();
+      appData.site.greetingCaption = document.getElementById('el-greeting-caption').innerText.trim();
+
+      appData.profile.name = document.getElementById('el-profile-name').innerText.trim();
+      appData.profile.displayName = document.getElementById('el-display-name').innerText.trim();
+      appData.profile.bio = document.getElementById('el-bio').innerText.trim();
+
+      appData.profile.listening = document.getElementById('el-curr-listening').innerText.trim();
+      appData.profile.watching = document.getElementById('el-curr-watching').innerText.trim();
+      appData.profile.reading = document.getElementById('el-curr-reading').innerText.trim();
+      appData.profile.feeling = document.getElementById('el-curr-feeling').innerText.trim();
+      appData.profile.thinking = document.getElementById('el-curr-thinking').innerText.trim();
+      appData.profile.favorites = document.getElementById('el-favorite-things').innerText.trim();
+      appData.profile.updates = document.getElementById('el-updates').innerText.trim();
+
+      // Extract polaroid captions directly from screen
+      appData.memories.forEach((m, idx) => {
+        const capEl = document.getElementById('pol-cap-' + idx);
+        if (capEl) m.caption = capEl.innerText.trim();
+      });
+
+      // Extract survey table edits
+      appData.survey.forEach((s, idx) => {
+        const lblEl = document.getElementById('survey-lbl-' + idx);
+        const valEl = document.getElementById('survey-val-' + idx);
+        if (lblEl) s.label = lblEl.innerText.trim();
+        if (valEl) s.val = valEl.innerText.trim();
+      });
+
+      // Local save
+      localStorage.setItem('kittylailacat_data', JSON.stringify(appData));
+
+      // Cloud save
       if (isFirebaseReady) {
         db.collection('site_config').doc('main').set({
           site: appData.site,
           profile: appData.profile,
           survey: appData.survey,
-          toggles: appData.toggles,
           memories: appData.memories
         }).then(() => {
-          closeSettingsModal();
-          alert("All changes saved to the cloud! Every visitor on every device will see this now! ♥");
-        }).catch(err => {
-          alert("Error saving to Firebase: " + err.message);
-        });
+          alert("Saved directly to cloud! Everything on screen is updated everywhere! ♥");
+          renderSite();
+        }).catch(err => alert("Firebase error: " + err.message));
       } else {
-        closeSettingsModal();
-        renderEntireSite();
+        alert("Saved locally! (Paste Firebase keys to sync across internet)");
+        renderSite();
       }
     }
 
-    // 6. Post Create & Edit (Cloud Firestore)
-    function openPostModal() {
-      document.getElementById('post-modal-heading').innerText = '✎ WRITE NEW DIARY ENTRY';
-      document.getElementById('editing-post-id').value = '';
-      document.getElementById('post-title-input').value = '';
-      document.getElementById('post-date-input').value = new Date().toLocaleDateString('en-GB');
-      document.getElementById('post-mood-input').value = '';
-      document.getElementById('post-img-input').value = '';
-      document.getElementById('post-body-input').value = '';
+    // 9. Post Management
+    function openNewPostModal() {
       document.getElementById('postModal').classList.add('open');
     }
-
-    function editPost(id) {
-      const p = appData.posts.find(x => x.id === id);
-      if (!p) return;
-      document.getElementById('post-modal-heading').innerText = '✎ EDIT DIARY ENTRY';
-      document.getElementById('editing-post-id').value = p.id;
-      document.getElementById('post-title-input').value = p.title;
-      document.getElementById('post-date-input').value = p.date;
-      document.getElementById('post-mood-input').value = p.mood;
-      document.getElementById('post-img-input').value = p.image || '';
-      document.getElementById('post-body-input').value = p.body;
-      document.getElementById('postModal').classList.add('open');
-    }
-
     function closePostModal() {
       document.getElementById('postModal').classList.remove('open');
     }
 
-    function savePostToCloud() {
-      const id = document.getElementById('editing-post-id').value;
+    function publishNewPost() {
       const title = document.getElementById('post-title-input').value.trim();
       const body = document.getElementById('post-body-input').value.trim();
       const date = document.getElementById('post-date-input').value.trim() || '10/10/26';
@@ -1351,80 +1211,36 @@
       const img = document.getElementById('post-img-input').value.trim();
 
       if (!title || !body) {
-        alert('Please fill in both a title and diary text!');
+        alert("Please provide both title and body text!");
         return;
       }
 
-      const postData = {
-        title, body, date, mood,
-        image: img,
-        timestamp: Date.now()
-      };
+      const newPost = { title, body, date, mood, image: img, timestamp: Date.now() };
 
       if (isFirebaseReady) {
-        if (id) {
-          db.collection('posts').doc(id).update(postData).then(() => {
-            closePostModal();
-          });
-        } else {
-          db.collection('posts').add(postData).then(() => {
-            closePostModal();
-            switchTab('home');
-          });
-        }
+        db.collection('posts').add(newPost).then(() => {
+          closePostModal();
+          switchTab('home');
+        });
       } else {
-        alert("Please connect Firebase first to save everywhere!");
+        newPost.id = 'post-' + Date.now();
+        appData.posts.unshift(newPost);
+        localStorage.setItem('kittylailacat_data', JSON.stringify(appData));
+        closePostModal();
+        renderPosts();
+        switchTab('home');
       }
     }
 
     function deletePost(id) {
-      if (confirm('Delete this diary post forever from the cloud?')) {
-        if (isFirebaseReady) {
-          db.collection('posts').doc(id).delete();
+      if (confirm("Delete this diary post forever?")) {
+        if (isFirebaseReady) db.collection('posts').doc(id).delete();
+        else {
+          appData.posts = appData.posts.filter(p => p.id !== id);
+          localStorage.setItem('kittylailacat_data', JSON.stringify(appData));
+          renderPosts();
         }
       }
-    }
-
-    // 7. Scrapbook Photo Addition
-    function addScrapbookPhotoPrompt() {
-      if (!currentUser) {
-        alert("Please log in as Admin to pin photos!");
-        return;
-      }
-      const url = prompt('Enter Image Path or Web URL (e.g. images/photo1.jpg):', 'images/photo1.jpg');
-      if (!url) return;
-      const cap = prompt('Enter Photo Caption (e.g. 10/10/26 • late night):', '10/10/26 • cute');
-      
-      appData.memories.push({ img: url, caption: cap || '10/10/26' });
-      if (isFirebaseReady) {
-        db.collection('site_config').doc('main').update({ memories: appData.memories });
-      }
-    }
-
-    function deleteMemoryPhoto(idx) {
-      if (confirm('Remove this photo from your scrapbook?')) {
-        appData.memories.splice(idx, 1);
-        if (isFirebaseReady) {
-          db.collection('site_config').doc('main').update({ memories: appData.memories });
-        }
-      }
-    }
-
-    function signGuestbook() {
-      const name = document.getElementById('gb-name').value.trim() || 'visitor';
-      const msg = document.getElementById('gb-msg').value.trim();
-      if (!msg) return;
-
-      const container = document.getElementById('guestbook-entries');
-      const note = document.createElement('div');
-      note.style.cssText = "background: #1b1522; border-left: 3px solid var(--accent-pink); padding: 10px; margin-bottom: 10px;";
-      note.innerHTML = `
-        <div style="font-size: 11px; color: var(--dusty-pink); margin-bottom: 4px;">✦ ${escapeHtml(name)} &bull; today</div>
-        <div>${escapeHtml(msg)}</div>
-      `;
-      container.prepend(note);
-      document.getElementById('gb-msg').value = '';
-      alert('Thank you for signing laila\'s guestbook! ♥');
     }
 
     function escapeHtml(str) {
@@ -1433,7 +1249,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      renderEntireSite();
+      renderSite();
     });
   </script>
 </body>
